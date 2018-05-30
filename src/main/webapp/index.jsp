@@ -30,7 +30,7 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/activityfeed.jsp">Activity Feed</a>
+    <a href="/activityfeed">Activity Feed</a>
   </nav>
 
   <div id="container">
@@ -46,7 +46,7 @@
             create or join a conversation.</li>
         <li>View the <a href="/about.jsp">about</a> page to learn more about the
             project.</li>
-        <li>Check out the <a href="/activityfeed.jsp">activity feed</a> for latest activity.</li>
+        <li>Check out the <a href="/activityfeed">activity feed</a> for latest activity.</li>
       </ul>
     </div>
   </div>

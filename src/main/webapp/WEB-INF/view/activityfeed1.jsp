@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>Activity Feed 1</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -30,18 +31,16 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/activityfeed.jsp">Activity Feed</a>
+    <a href="/activityfeed">Activity Feed</a>
   </nav>
 
   <div id="container">
-    <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>Activity Feed</h1>
-      
-      <p>This is the activity feed.</p>
-      
-    </div>
+    <h1>Activity Feed 1</h1>
+
+	<p> This is the activity feed 1</p>
+
+    <hr/>
   </div>
 </body>
 </html>
