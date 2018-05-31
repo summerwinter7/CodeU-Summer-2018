@@ -24,7 +24,7 @@
       <%  } %>
     </nav>
 
-    <div id="container"><h1><%=request.getSession().getAttribute("user")%>'s Profile</h1>
+    <div id="container"><h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
       <hr/>
       <form action="/profile/<%=request.getSession().getAttribute("user")%>" method-"POST">
         <input type="text" name="AboutMe">
