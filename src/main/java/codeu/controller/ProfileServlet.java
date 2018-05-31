@@ -7,6 +7,10 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 public class ProfileServlet extends HttpServlet {
+  // public void doGet(HttpServletRequest request, HttpServletResponse response)
+  //     throws IOException, ServletException {
+  //       response.getOutputStream().println("Hello");
+  // }
       @Override
       public void init() throws ServletException {
           super.init();
@@ -16,8 +20,11 @@ public class ProfileServlet extends HttpServlet {
       @Override
       public void doGet(HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
-        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
       }
+
+
+
       @Override
       public void doPost(HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
