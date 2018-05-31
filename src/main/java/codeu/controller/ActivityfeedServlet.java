@@ -13,7 +13,7 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 
-
+/** This class was mostly modeled using the ConversationServlet as a guide */
 public class ActivityfeedServlet extends HttpServlet{
 	
 	/** Store class that gives access to Users. */
@@ -22,6 +22,10 @@ public class ActivityfeedServlet extends HttpServlet{
 	/** Store class that gives access to Conversations. */
 	private ConversationStore conversationStore;
 	
+	/**
+	 * Set up state for handling the activity feed. This method is only called when
+	 * running in a server, not when running in a test.
+	 */
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -45,12 +49,16 @@ public class ActivityfeedServlet extends HttpServlet{
 	  this.conversationStore = conversationStore;
 	}
 	
+	/**
+	 * This function fires when a user navigates to the activity feed page. It gets all of the
+	 * conversations and users from the model and forwards to activityfeed.jsp for rendering the list.
+	 * It also forwards the userStore so that activityfeed.jsp can find the owners of conversations.
+	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException{
 	    List<Conversation> conversations = conversationStore.getAllConversations();
 	    List<User> users = userStore.getAllUsers();
-	    //add all users and messages as attributes
 	    request.setAttribute("conversations", conversations);
 	    request.setAttribute("userStore", userStore);
 	    request.setAttribute("users", users);

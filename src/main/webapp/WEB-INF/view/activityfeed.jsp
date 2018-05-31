@@ -44,12 +44,15 @@
 
 	<p> This is the activity feed</p>
 
+	<%-- A lot of this code is recycled from conversations.jsp, which finds
+		and lists all of the current conversations, although this one will also
+		find and list the users and messages, all sorted by creation time. --%>
     <%
     UserStore userStore = (UserStore) request.getAttribute("userStore");
     List<User> users = (List<User>) request.getAttribute("users");
     List<Conversation> conversations =
       (List<Conversation>) request.getAttribute("conversations");
-    if(conversations == null || conversations.isEmpty()){
+    if((conversations == null || conversations.isEmpty()) && (users == null || users.isEmpty())){
     %>
       <p>No activity yet.</p>
     <%
@@ -58,13 +61,9 @@
     %>
       <ul class="mdl-list">
       
-    <%--
-    	int convIndex = conversations.size()-1;
-    	int userIndex = users.size()-1;
-    	while (convIndex >=0 || userIndex >=0){
-    		
-    	}	
-    --%>
+    <%-- Cycles throught the conversations backwards in order to list them chronologically
+    	with the most recent activity listed first. Also lists the user that created the
+    	conversation and links to the conversation created --%>
     <%
       for(int c = conversations.size()-1; c >=0; c--) {
     	  Conversation conversation = conversations.get(c);
@@ -77,6 +76,8 @@
     <%
       }
     %>
+    
+    <%-- Same as above, but this time cycles through the users and lists when they've joined --%>
     <%
       for(int u = users.size()-1; u >=0; u--) {
     	  User user = users.get(u);
