@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="/css/main.css">
@@ -17,7 +15,7 @@
         <a href="/login">Login</a>
       <% } %>
       <a href="/about.jsp">About</a>
-      <a href="/activityfeed">Activity Fedd</a>
+      <a href="/activityfeed">Activity Feed</a>
       <%  if (request.getSession().getAttribute("user") != null) { %>
           <a href="/profile/<%=request.getSession().getAttribute("user")%>">Profile</a>
       <%  } else{ %>
@@ -25,14 +23,16 @@
       <%  } %>
     </nav>
 
-    <div id="container"><h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
+    <div id="container">
+      <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
       <hr/>
       <form action="/profile/<%=request.getSession().getAttribute("user")%>" method-"POST">
+        <h2> About Me </h2>
         <input type="text" name="AboutMe">
           <br/><br/>
         <button type="submit">Submit</button>
       </form>
-      <p> <% UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")) %> </p>
+
 
     </div>
 </body>

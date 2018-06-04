@@ -28,12 +28,12 @@ public class ProfileServletTest {
           profileServlet = new ProfileServlet();
 
           mockRequest = Mockito.mock(HttpServletRequest.class);
-          mockSession = Mockito.mock(HttpSession.class);
-          Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+          //mockSession = Mockito.mock(HttpSession.class);
+          //Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
           mockResponse = Mockito.mock(HttpServletResponse.class);
           mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-          Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/profileServlet.jsp"))
+          Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/profile.jsp"))
               .thenReturn(mockRequestDispatcher);
 
           mockUserStore = Mockito.mock(UserStore.class);
@@ -46,7 +46,7 @@ public class ProfileServletTest {
           Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
         }
 
-        
+
 
 
 }
