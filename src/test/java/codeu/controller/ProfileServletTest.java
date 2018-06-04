@@ -37,11 +37,16 @@ public class ProfileServletTest {
               .thenReturn(mockRequestDispatcher);
 
           mockUserStore = Mockito.mock(UserStore.class);
-          chatServlet.setUserStore(mockUserStore);
+          profileServlet.setUserStore(mockUserStore);
        }
 
        @Test
        public void testDoGet() throws IOException, ServletException {
+          profileServlet.doGet(mockRequest, mockResponse);
+          Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+        }
+
+        
 
 
 }
