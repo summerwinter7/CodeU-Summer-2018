@@ -1,20 +1,28 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+
 public class ProfileServlet extends HttpServlet {
-  // public void doGet(HttpServletRequest request, HttpServletResponse response)
-  //     throws IOException, ServletException {
-  //       response.getOutputStream().println("Hello");
-  // }
-      @Override
-      public void init() throws ServletException {
-          super.init();
-      }
+    private UserStore userStore;
+    private User user;
+
+
+    public void init() throws ServletException {
+      super.init();
+      setUserStore(UserStore.getInstance());
+    }
+
+    void setUserStore(UserStore userStore) {
+      this.userStore = userStore;
+    }
+
 
 
       @Override
@@ -23,13 +31,18 @@ public class ProfileServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
       }
 
-
-
       @Override
       public void doPost(HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
-            String userValue = request.getParameter("AboutMe");
-            System.out.println(userValue);
-            response.sendRedirect("/profile/" + request.getSession().getAttribute("user"));
+                String username = (String) request.getSession().getAttribute("user");
+                user = UserStore.getInstance().getUser(username);
+
+                if (request.getSession().getAttribute("user") != null) {
+                    String aboutMe = request.getParameter("aboutMe");
+                    user.setAboutMe(aboutMe);
+                    UserStore.getInstance().updateUser(user);
+                    
+                }
+
       }
 }

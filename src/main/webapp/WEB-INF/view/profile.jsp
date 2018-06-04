@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -31,6 +32,8 @@
           <br/><br/>
         <button type="submit">Submit</button>
       </form>
+      <p> <% UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")) %> </p>
+
     </div>
 </body>
 
