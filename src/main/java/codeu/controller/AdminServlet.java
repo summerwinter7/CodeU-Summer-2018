@@ -14,6 +14,7 @@
 
 package codeu.controller;
 
+//may need imports for additional stats
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
@@ -21,17 +22,13 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the chat page. */
 public class AdminServlet extends HttpServlet {
@@ -60,27 +57,10 @@ public class AdminServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-	  request.getRequestDispactcher("/WEB-INF/view/admin.jsp").forward(request, response);
-    }
-
-    
-
-  /**
-   * Work on this for final product. checks if user is an admin
-   */
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-
-    String username = (String) request.getSession().getAttribute("user");
-    if (username == null) {
-      // user is not logged in, don't let them add a message
-      response.sendRedirect("/login");
-      return;
-    }
-   // else if(user is an admin)
-
-    User user = userStore.getUser(username);
-  
+	  request.setAttribute("totalUsers", userStore.totalUsers());
+	  request.setAttribute("totalConvos", ConversationStore.totalConvos());
+	  request.setAttribute("totalMessages", MessageStore.totalMessages());
+	  request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+	//check for admin users for final product
   }
 }
