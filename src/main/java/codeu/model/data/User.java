@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /** Class representing a registered user. */
-public class User {
+public class User implements Activity{
   private final UUID id;
   private final String name;
   private final String passwordHash;
@@ -57,5 +57,15 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  @Override
+  public String getMessage() {
+	return name + " joined!";
+  }
+  
+  @Override
+  public int compareTo(Activity a) {
+	  return creation.compareTo(a.getCreationTime());
   }
 }

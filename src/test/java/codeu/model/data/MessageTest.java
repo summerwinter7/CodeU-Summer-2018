@@ -36,5 +36,9 @@ public class MessageTest {
     Assert.assertEquals(author, message.getAuthorId());
     Assert.assertEquals(content, message.getContent());
     Assert.assertEquals(creation, message.getCreationTime());
+    
+    //Since User and Message both implement Activity, we test the compareTo method
+    User user = new User(UUID.randomUUID(), "test2", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now().plusSeconds(2));
+    Assert.assertEquals(-1, message.compareTo(user));
   }
 }

@@ -21,7 +21,7 @@ import java.util.UUID;
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
  * created by a User and contain Messages.
  */
-public class Conversation {
+public class Conversation implements Activity{
   public final UUID id;
   public final UUID owner;
   public final Instant creation;
@@ -60,5 +60,16 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  @Override
+  public String getMessage() {
+	// TODO: add the owner of the conversation to this message
+	return "Conversation created: " + title;
+  }
+
+  @Override
+  public int compareTo(Activity a) {
+	return creation.compareTo(a.getCreationTime());
   }
 }
