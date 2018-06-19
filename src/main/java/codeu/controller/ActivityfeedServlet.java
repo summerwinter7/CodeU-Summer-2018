@@ -71,8 +71,7 @@ public class ActivityfeedServlet extends HttpServlet{
 		for (Message message : messages) {
 			activity.add(message);
 		}
-		Collections.sort(activity);
-		Collections.reverse(activity);
+		Collections.sort(activity, Collections.reverseOrder());
 		return activity;
 	}
 	
