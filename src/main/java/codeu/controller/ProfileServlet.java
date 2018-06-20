@@ -35,14 +35,22 @@ public class ProfileServlet extends HttpServlet {
       public void doPost(HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
                 String username = (String) request.getSession().getAttribute("user");
-                user = UserStore.getInstance().getUser(username);
-
-                if (request.getSession().getAttribute("user") != null) {
-                    String aboutMe = request.getParameter("aboutMe");
-                    user.setAboutMe(aboutMe);
-                    UserStore.getInstance().updateUser(user);
-                    response.sendRedirect("/profile/" + username);
+                if(username ==null) {
+                    response.sendRedirect("/login");
+                    return;
                 }
+                user = UserStore.getInstance().getUser(username);
+                if (user == null){
+                    response.sendRedirect("/login");
+                    return;
+                }
+
+
+                String aboutMe = request.getParameter("aboutMe");
+                user.setAboutMe(aboutMe);
+                UserStore.getInstance().updateUser(user);
+                response.sendRedirect("/profile/" + username);
+
 
       }
 }

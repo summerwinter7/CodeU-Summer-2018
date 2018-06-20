@@ -1,3 +1,6 @@
+<%@ page import="codeu.model.store.basic.UserStore"%>
+<%@ page import="codeu.model.data.User"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,14 +27,20 @@
     </nav>
 
     <div id="container">
-      <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
-      <hr/>
-      <form action="/profile/<%=request.getSession().getAttribute("user")%>" method-"POST">
-        <h2> About Me </h2>
-        <input type="text" name="AboutMe">
-          <br/><br/>
-        <button type="submit">Submit</button>
-      </form>
+      <%if(request.getSession().getAttribute("user") != null) { %>
+        <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
+        <hr/>
+        <form action="/profile/<%=request.getSession().getAttribute("user")%>" method-"POST">
+          <h2> About Me </h2>
+
+          <input type="text" name="aboutMe">
+            <br/><br/>
+          <button type="submit">Submit</button>
+              <p><%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
+
+        </form>
+      <%} %>
+
 
 
     </div>
