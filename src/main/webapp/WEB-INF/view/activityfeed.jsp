@@ -32,6 +32,11 @@
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/activityfeed">Activity Feed</a>
+    <%  if (request.getSession().getAttribute("user") != null) { %>
+        <a href="/profile">Profile</a>
+    <%  } else{ %>
+        <a></a>
+    <%  } %>
   </nav>
 
   <div id="container">
@@ -39,7 +44,7 @@
     <h1>Activity Feed</h1>
 
 	<p> This is the activity feed</p>
-	
+
     <hr/>
   </div>
 </body>

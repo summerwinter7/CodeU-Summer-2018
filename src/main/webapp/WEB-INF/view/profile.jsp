@@ -4,6 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+  p {margin:2px; padding: 2px; margin-top:-25px;}
+  h3{margin-bottom:0px;}}
+</style>
+
     <title>Profile</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -30,20 +35,14 @@
       <%if(request.getSession().getAttribute("user") != null) { %>
         <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
         <hr/>
-
         <form action="/profile" method="POST">
           <h2> About Me </h2>
-
-          <input type="text" name="aboutMe">
-            <br/><br/>
+            <p style="width: 800px"><%=UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
+          <h3> Edit your About Me(only you can see this)</h2>
+          <textarea name="aboutMe" rows="5" cols="112"></textarea>
           <button type="submit">Submit</button>
-              <p><%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
-
         </form>
       <%} %>
-
-
-
     </div>
 </body>
 
