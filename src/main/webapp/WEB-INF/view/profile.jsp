@@ -20,7 +20,7 @@
       <a href="/about.jsp">About</a>
       <a href="/activityfeed">Activity Feed</a>
       <%  if (request.getSession().getAttribute("user") != null) { %>
-          <a href="/profile/<%=request.getSession().getAttribute("user")%>">Profile</a>
+          <a href="/profile">Profile</a>
       <%  } else{ %>
           <a></a>
       <%  } %>
@@ -30,7 +30,8 @@
       <%if(request.getSession().getAttribute("user") != null) { %>
         <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
         <hr/>
-        <form action="/profile/<%=request.getSession().getAttribute("user")%>" method-"POST">
+
+        <form action="/profile" method="POST">
           <h2> About Me </h2>
 
           <input type="text" name="aboutMe">
