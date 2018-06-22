@@ -37,7 +37,7 @@
         <hr/>
         <form action="/profile" method="POST">
           <h2> About Me </h2>
-            <p style="width: 800px"><%=UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
+            <p style="width:800px"><%=UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
           <h3> Edit your About Me(only you can see this)</h2>
           <textarea name="aboutMe" rows="5" cols="112"></textarea>
           <button type="submit">Submit</button>
