@@ -60,7 +60,7 @@ public class User implements Activity{
   }
 
   @Override
-  public String getMessage() {
+  public String getDisplayText() {
 	return name + " joined!";
   }
   

@@ -62,7 +62,7 @@
       for(Activity a : activity){
     %>
       <li><%= formatter.format(a.getCreationTime())%> ET 
-        <%= a.getMessage() %></li>
+        <%= a.getDisplayText() %></li>
     <%
       }
     %>

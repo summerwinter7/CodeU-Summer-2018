@@ -26,6 +26,7 @@ public class Conversation implements Activity{
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  private String displayText;
 
   /**
    * Constructs a new Conversation.
@@ -40,6 +41,7 @@ public class Conversation implements Activity{
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.displayText = "Conversation created: " + title;
   }
 
   /** Returns the ID of this Conversation. */
@@ -61,11 +63,14 @@ public class Conversation implements Activity{
   public Instant getCreationTime() {
     return creation;
   }
+  
+  public void setDisplayText(String s) {
+	  displayText = s;
+  }
 
   @Override
-  public String getMessage() {
-	// TODO: add the owner of the conversation to this message
-	return "Conversation created: " + title;
+  public String getDisplayText() {
+	return displayText;
   }
 
   @Override
