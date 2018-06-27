@@ -23,6 +23,7 @@ public class User implements Activity{
   private final String name;
   private final String passwordHash;
   private final Instant creation;
+  private String aboutMe;
 
   /**
    * Constructs a new User.
@@ -32,11 +33,12 @@ public class User implements Activity{
    * @param passwordHash the password hash of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, String passwordHash, Instant creation) {
+  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe) {
     this.id = id;
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
+    this.aboutMe = aboutMe;
   }
 
   /** Returns the ID of this User. */
@@ -48,7 +50,7 @@ public class User implements Activity{
   public String getName() {
     return name;
   }
-  
+
   /** Returns the password hash of this User. */
   public String getPasswordHash() {
     return passwordHash;
@@ -67,5 +69,13 @@ public class User implements Activity{
   @Override
   public int compareTo(Activity a) {
 	  return creation.compareTo(a.getCreationTime());
+  }
+  
+  public void setAboutMe(String aboutMe) {
+    this.aboutMe = aboutMe;
+  }
+
+  public String getAboutMe() {
+    return aboutMe;
   }
 }

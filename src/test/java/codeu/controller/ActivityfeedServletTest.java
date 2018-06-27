@@ -61,10 +61,10 @@ public class ActivityfeedServletTest {
 		List<User> fakeUserList = new ArrayList<>();
 		List<Conversation> fakeConversationList = new ArrayList<>();
 		List<Message> fakeMessageList = new ArrayList<>();
-		User user1 = new User(UUID.randomUUID(), "test_name", "password", Instant.EPOCH);
+		User user1 = new User(UUID.randomUUID(), "test_name", "password", Instant.EPOCH, "about me");
 		Conversation conversation1 = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_name", Instant.EPOCH.plusSeconds(1));
 		Message message1 = new Message(UUID.randomUUID(), UUID.randomUUID(),UUID.randomUUID(), "test_message", Instant.EPOCH.plusSeconds(2));
-		User user2 = new User(UUID.randomUUID(), "test_name2", "password2", Instant.EPOCH.plusSeconds(3));
+		User user2 = new User(UUID.randomUUID(), "test_name2", "password2", Instant.EPOCH.plusSeconds(3), "about me 2");
 		Conversation conversation2 = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_name2", Instant.EPOCH.plusSeconds(4));
 		Message message2 = new Message(UUID.randomUUID(), UUID.randomUUID(),UUID.randomUUID(), "test_message2", Instant.EPOCH.plusSeconds(5));
 
