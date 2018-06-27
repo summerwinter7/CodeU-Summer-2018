@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
-public class Message {
+public class Message implements Activity{
 
   private final UUID id;
   private final UUID conversation;
@@ -66,5 +66,15 @@ public class Message {
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  @Override
+  public String getMessage() {
+	return "Message sent: " + "\"" + content + "\"";
+  }
+
+  @Override
+  public int compareTo(Activity a) {
+	return creation.compareTo(a.getCreationTime());
   }
 }

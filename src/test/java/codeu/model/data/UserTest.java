@@ -37,4 +37,12 @@ public class UserTest {
     Assert.assertEquals(creation, user.getCreationTime());
     Assert.assertEquals(aboutMe, user.getAboutMe());
   }
+  
+  @Test
+  public void testCompareTo() {
+	User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now());
+    //Since Conversation and User both implement Activity, we test the compareTo method
+    Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now().plusSeconds(2));
+    Assert.assertEquals(-1, user.compareTo(conversation));
+  }
 }

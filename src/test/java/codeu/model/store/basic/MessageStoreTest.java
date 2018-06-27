@@ -1,6 +1,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -77,6 +78,15 @@ public class MessageStoreTest {
 
     assertEquals(inputMessage, resultMessage);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
+  }
+  
+  @Test
+  public void testGetAllMessages() {
+	  List<Message> messageList = new ArrayList<>();
+	    messageList.add(MESSAGE_ONE);
+	    messageList.add(MESSAGE_TWO);
+	    messageList.add(MESSAGE_THREE);
+	  Assert.assertEquals(messageList, messageStore.getAllMessages());
   }
 
   private void assertEquals(Message expectedMessage, Message actualMessage) {

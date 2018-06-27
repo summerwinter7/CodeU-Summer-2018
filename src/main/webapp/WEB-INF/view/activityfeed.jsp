@@ -13,6 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Activity" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.ZoneOffset" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -37,8 +42,31 @@
   <div id="container">
 
     <h1>Activity Feed</h1>
-
-	<p> This is the activity feed</p>
+	
+	<%
+    List<Activity> activity =
+      (List<Activity>) request.getAttribute("activity");
+    if(activity == null || activity.isEmpty()){
+    %>
+      <p>No recent activity.</p>
+    <%
+    }
+    else{
+    %>
+      <ul class="mdl-list">
+      
+    <%
+      for(Activity a : activity){
+    %>
+      <li><%= LocalDateTime.ofInstant(a.getCreationTime(), ZoneOffset.UTC) %>
+        <%= a.getMessage() %></li>
+    <%
+      }
+    %>
+      </ul>
+    <%
+    }
+    %>
 	
     <hr/>
   </div>
