@@ -1,4 +1,4 @@
-# CodeU Example Project
+# CodeU [hip, hip] Example Project
 
 This is an example chat application. It's complete and functional, but leaves
 plenty of room for improvement.
