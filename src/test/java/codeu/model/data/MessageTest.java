@@ -42,7 +42,7 @@ public class MessageTest {
   public void testCompareTo() {
 	Message message = new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now());
     //Since User and Message both implement Activity, we test the compareTo method
-    User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now().plusSeconds(2));
+    User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now().plusSeconds(2), "about me");
     Assert.assertEquals(-1, message.compareTo(user));  
   }
 }
