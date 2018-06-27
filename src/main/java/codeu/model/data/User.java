@@ -61,7 +61,6 @@ public class User implements Activity{
     return creation;
   }
 
-
   @Override
   public String getMessage() {
 	  return name + " joined!";
