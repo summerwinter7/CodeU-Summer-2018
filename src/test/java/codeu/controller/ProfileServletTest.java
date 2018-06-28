@@ -49,6 +49,7 @@ public class ProfileServletTest {
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
 
     profileServlet.doPost(mockRequest, mockResponse);
+  
   }
 
 }
