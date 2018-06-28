@@ -20,6 +20,9 @@ public class ConversationStoreTest {
       new Conversation(
           UUID.randomUUID(), UUID.randomUUID(), "conversation_one", Instant.ofEpochMilli(1000));
 
+  private final Conversation CONVERSATION_TWO =
+	      new Conversation(
+	          UUID.randomUUID(), UUID.randomUUID(), "conversation_two", Instant.ofEpochMilli(1000));
   @Before
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
@@ -27,6 +30,7 @@ public class ConversationStoreTest {
 
     final List<Conversation> conversationList = new ArrayList<>();
     conversationList.add(CONVERSATION_ONE);
+    conversationList.add(CONVERSATION_TWO);
     conversationStore.setConversations(conversationList);
   }
 
@@ -72,6 +76,13 @@ public class ConversationStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputConversation);
   }
 
+  /*@Test
+  public void testTotalConvos(){
+	  //Get number of convos
+	  int totalConvosTest = conversationStore.totalConvos();
+	  Assert.assertTrue(totalConvosTest == 2);
+  }*/
+  
   private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
     Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());
     Assert.assertEquals(expectedConversation.getOwnerId(), actualConversation.getOwnerId());
