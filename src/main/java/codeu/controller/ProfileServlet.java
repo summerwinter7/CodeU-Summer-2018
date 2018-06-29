@@ -29,7 +29,7 @@ public class ProfileServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-      
+
     String username = (String) request.getSession().getAttribute("user");
     user = UserStore.getInstance().getUser(username);
 
@@ -37,7 +37,7 @@ public class ProfileServlet extends HttpServlet {
       String aboutMe = request.getParameter("aboutMe");
       user.setAboutMe(aboutMe);
       UserStore.getInstance().updateUser(user);
-      response.sendRedirect("/profile");
     }
+    response.sendRedirect("/profile");
   }
 }
