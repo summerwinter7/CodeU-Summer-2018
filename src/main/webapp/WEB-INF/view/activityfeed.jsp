@@ -32,6 +32,7 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <a href="/profile">Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
@@ -42,6 +43,8 @@
   <div id="container">
 
     <h1>Activity Feed</h1>
+
+	<p> This is the activity feed</p>
 	
 	<%
     List<Activity> activity =
@@ -67,7 +70,6 @@
     <%
     }
     %>
-	
     <hr/>
   </div>
 </body>
