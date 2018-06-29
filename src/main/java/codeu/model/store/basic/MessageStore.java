@@ -91,7 +91,7 @@ public class MessageStore {
     this.messages = messages;
   }
 
-public static int totalMessages() {
-	return instance.messages.size();
+public int totalMessages() {
+	return messages.size();
 }
 }

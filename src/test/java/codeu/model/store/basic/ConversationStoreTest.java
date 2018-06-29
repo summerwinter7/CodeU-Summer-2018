@@ -76,12 +76,12 @@ public class ConversationStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputConversation);
   }
 
-  /*@Test
+  @Test
   public void testTotalConvos(){
 	  //Get number of convos
 	  int totalConvosTest = conversationStore.totalConvos();
 	  Assert.assertTrue(totalConvosTest == 2);
-  }*/
+  }
   
   private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
     Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());

@@ -101,7 +101,7 @@ public class ConversationStore {
     this.conversations = conversations;
   }
 
-  public static int totalConvos() {
-	  return instance.conversations.size();
+  public int totalConvos() {
+	  return conversations.size();
   }
 }
