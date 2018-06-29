@@ -20,7 +20,7 @@
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <% 
 	UserStore us = UserStore.getInstance();
-	Integer totalUsers = us.totalNumberOfUsers();
+	Integer totalUsers = us.totalUsers();
 %>
 
 <%-- Number of Convos --%>
@@ -28,7 +28,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <% 
 	ConversationStore cs = ConversationStore.getInstance();
-	Integer totalConvos = cs.totalNumberOfConversations();
+	Integer totalConvos = cs.totalConvos();
 %>
 
 <%-- Number of Messages --%>
@@ -36,7 +36,7 @@
 <%@ page import="codeu.model.store.basic.MessageStore"%>
 <% 
 	MessageStore ms = MessageStore.getInstance();
-	Integer totalConvos = ms.totalNumberOfMessages();
+	Integer totalConvos = ms.totalMessages();
 %>
 
 
@@ -58,7 +58,7 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/admin.jsp">Admin</a>
+    <a href="/admin">Admin</a>
   </nav>
 
   <div id="container">
