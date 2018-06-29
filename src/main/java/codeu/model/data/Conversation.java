@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,6 +28,8 @@ public class Conversation implements Activity{
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  private boolean isPublic;
+  private List<User> members;
 
   /**
    * Constructs a new Conversation.
@@ -35,11 +39,13 @@ public class Conversation implements Activity{
    * @param title the title of this Conversation
    * @param creation the creation time of this Conversation
    */
-  public Conversation(UUID id, UUID owner, String title, Instant creation) {
+  public Conversation(UUID id, UUID owner, String title, Instant creation, boolean isPublic) {
     this.id = id;
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.isPublic = isPublic;
+    this.members = new ArrayList<User>();
   }
 
   /** Returns the ID of this Conversation. */
@@ -60,6 +66,18 @@ public class Conversation implements Activity{
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+  
+  public boolean getIsPublic() {
+	  return isPublic;
+  }
+  
+  public void setMembers(List<User> members) {
+	  this.members = members;
+  }
+  
+  public List<User> getMembers() {
+	  return members;
   }
 
   @Override

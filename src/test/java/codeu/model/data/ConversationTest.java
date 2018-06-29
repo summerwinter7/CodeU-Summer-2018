@@ -27,19 +27,21 @@ public class ConversationTest {
     UUID owner = UUID.randomUUID();
     String title = "Test_Title";
     Instant creation = Instant.now();
+    boolean isPublic = true;
 
-    Conversation conversation = new Conversation(id, owner, title, creation);
+    Conversation conversation = new Conversation(id, owner, title, creation, isPublic);
 
     Assert.assertEquals(id, conversation.getId());
     Assert.assertEquals(owner, conversation.getOwnerId());
     Assert.assertEquals(title, conversation.getTitle());
     Assert.assertEquals(creation, conversation.getCreationTime());
+ //   Assert.assertEquals(isPublic, conversation.getIsPublic());
   
   }
   
   @Test
   public void testCompareTo() {
-	Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now());
+	Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
     //Since Conversation and Message both implement Activity, we test the compareTo method
     Message message = new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test", Instant.now().plusSeconds(2));
     Assert.assertEquals(-1, conversation.compareTo(message));
