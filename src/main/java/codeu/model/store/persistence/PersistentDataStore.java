@@ -102,7 +102,15 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        // change this so it's not always true
+        // This exists because this is a new feature, so conversations created before
+        // I implemented this were not stored with a value for is_public,
+        // so this makes the default to be true
+        boolean isPublic;
+        if (entity.getProperty("is_public") == null) {
+        	isPublic = true;
+        } else {
+        	isPublic = ((Boolean)entity.getProperty("is_public")).booleanValue();
+        }
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, true);
         conversations.add(conversation);
       } catch (Exception e) {
@@ -180,6 +188,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("is_public", true);
     datastore.put(conversationEntity);
   }
 }

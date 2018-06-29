@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /** Class representing a registered user. */
@@ -24,6 +26,7 @@ public class User implements Activity{
   private final String passwordHash;
   private final Instant creation;
   private String aboutMe;
+  private List<Conversation> conversations;
 
   /**
    * Constructs a new User.
@@ -39,6 +42,7 @@ public class User implements Activity{
     this.passwordHash = passwordHash;
     this.creation = creation;
     this.aboutMe = aboutMe;
+    this.conversations = new ArrayList<Conversation>();
   }
 
   /** Returns the ID of this User. */
@@ -59,6 +63,16 @@ public class User implements Activity{
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+  
+  /** Returns the list of all conversations this user is a member of. */
+  public List<Conversation> getConversations() {
+	  return conversations;
+  }
+  
+  /** Adds the conversation to the list of conversations the user is a member of. */
+  public void addConversation(Conversation conversation) {
+	  conversations.add(conversation);
   }
 
   @Override
