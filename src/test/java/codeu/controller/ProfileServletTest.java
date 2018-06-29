@@ -62,7 +62,6 @@ public class ProfileServletTest {
             Instant.now(), "test_aboutMe");
 
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
 
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
@@ -73,7 +72,7 @@ public class ProfileServletTest {
 
     profileServlet.doPost(mockRequest, mockResponse);
 
-    Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+    Mockito.verify(mockUserStore, Mockito.never()).addUser(user);
     Mockito.verify(mockResponse).sendRedirect("/profile");
   }
 
