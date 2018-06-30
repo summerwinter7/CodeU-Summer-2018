@@ -36,7 +36,7 @@
 <%@ page import="codeu.model.store.basic.MessageStore"%>
 <% 
 	MessageStore ms = MessageStore.getInstance();
-	Integer totalConvos = ms.totalMessages();
+	Integer totalMessages = ms.totalMessages();
 %>
 
 
