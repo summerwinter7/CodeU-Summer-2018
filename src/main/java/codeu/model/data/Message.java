@@ -25,6 +25,7 @@ public class Message implements Activity{
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private String displayText;
 
   /**
    * Constructs a new Message.
@@ -41,6 +42,7 @@ public class Message implements Activity{
     this.author = author;
     this.content = content;
     this.creation = creation;
+    this.displayText = "Message sent: " + "\"" + content + "\"";
   }
 
   /** Returns the ID of this Message. */
@@ -68,9 +70,13 @@ public class Message implements Activity{
     return creation;
   }
 
+  public void setDisplayText(String s) {
+	  displayText = s;
+  }
+  
   @Override
-  public String getMessage() {
-	return "Message sent: " + "\"" + content + "\"";
+  public String getDisplayText() {
+	return displayText;
   }
 
   @Override

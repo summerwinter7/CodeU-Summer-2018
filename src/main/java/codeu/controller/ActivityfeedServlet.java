@@ -66,9 +66,14 @@ public class ActivityfeedServlet extends HttpServlet{
 			activity.add(user);
 		}	
 		for (Conversation convo : conversations) {
+			User owner = userStore.getUser(convo.getOwnerId());
+			convo.setDisplayText(owner.getName() + " created conversation: " + convo.getTitle());
 			activity.add(convo);
 		}
 		for (Message message : messages) {
+			User author = userStore.getUser(message.getAuthorId());
+			Conversation conversation = conversationStore.getConversationWithID(message.getConversationId());
+			message.setDisplayText(author.getName() + " sent message: \"" + message.getContent() + "\"" + " to conversation: " + conversation.getTitle());
 			activity.add(message);
 		}
 		Collections.sort(activity, Collections.reverseOrder());

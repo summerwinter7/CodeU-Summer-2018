@@ -15,8 +15,10 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Activity" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.ZoneOffset" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.FormatStyle" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.time.ZoneId" %>
 
 
 <!DOCTYPE html>
@@ -59,10 +61,11 @@
       <ul class="mdl-list">
       
     <%
+      DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
       for(Activity a : activity){
     %>
-      <li><%= LocalDateTime.ofInstant(a.getCreationTime(), ZoneOffset.UTC) %>
-        <%= a.getMessage() %></li>
+      <li><%= formatter.format(a.getCreationTime())%> ET 
+        <%= a.getDisplayText() %></li>
     <%
       }
     %>
