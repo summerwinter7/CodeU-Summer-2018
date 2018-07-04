@@ -13,33 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%-- Imports needed for Admin Page --%>
-
-<%-- Number of users --%>
-<%@ page import="codeu.model.data.User" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
-<% 
-	UserStore us = UserStore.getInstance();
-	Integer totalUsers = us.totalUsers();
-%>
-
-<%-- Number of Convos --%>
-<%@ page import="codeu.model.store.basic.ConversationStore" %>
-<%@ page import="codeu.model.data.Conversation" %>
-<% 
-	ConversationStore cs = ConversationStore.getInstance();
-	Integer totalConvos = cs.totalConvos();
-%>
-
-<%-- Number of Messages --%>
-<%@ page import="codeu.model.data.Message" %>
-<%@ page import="codeu.model.store.basic.MessageStore"%>
-<% 
-	MessageStore ms = MessageStore.getInstance();
-	Integer totalMessages = ms.totalMessages();
-%>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -58,7 +31,7 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/admin">Admin</a>
+    <a href="/admin.jsp">Admin</a>
   </nav>
 
   <div id="container">
@@ -72,9 +45,9 @@
       </p>
 
       <ul>
-        <li>Users: <%=totalUsers %> </li>
-        <li>Conversations: <%=totalConvos %></li>
-        <li>Messages: <%=totalMessages %> </li>
+        <li>Users: <%=request.getAttribute("totalUsers")%> </li>
+        <li>Conversations: <%=request.getAttribute("totalConvos")%></li>
+        <li>Messages: <%=request.getAttribute("totalMessages") %> </li>
       </ul>
     </div>
   </div>

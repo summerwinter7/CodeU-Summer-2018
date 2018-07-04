@@ -13,7 +13,10 @@
 // limitations under the License.
 
 package codeu.controller;
-//imports
+
+import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,17 +25,58 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet class responsible for the chat page. */
 public class AdminServlet extends HttpServlet {
-  /** Set up state for handling login requests. */
-  @Override
-  public void init() throws ServletException {
-    super.init();   
-  }
-  /**
-   * This function fires when a user selects the admin page.
-   */
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-	  request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-  }
+
+	/** Store class that gives access to Users. */
+	private UserStore userStore;
+	private ConversationStore convoStore;
+	private MessageStore messageStore;
+
+	/** Set up state for handling login requests. */
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		setUserStore(UserStore.getInstance());
+		setConversationStore(ConversationStore.getInstance());
+		setMessageStore(MessageStore.getInstance());
+	}
+
+	/**
+	 * Sets the UserStore used by this servlet. This function provides a common
+	 * setup method for use by the test framework or the servlet's init()
+	 * function.
+	 */
+	public void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
+
+	/**
+	 * Sets the ConversationStore used by this servlet. This function provides a
+	 * common setup method for use by the test framework or the servlet's init()
+	 * function.
+	 */
+	public void setConversationStore(ConversationStore convoStore) {
+		this.convoStore = convoStore;
+	}
+
+	/**
+	 * Sets the UserStore used by this servlet. This function provides a common
+	 * setup method for use by the test framework or the servlet's init()
+	 * function.
+	 */
+	public void setMessageStore(MessageStore messageStore) {
+		this.messageStore = messageStore;
+	}
+
+	/**
+	 * This function fires when a user selects the admin page.
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		request.setAttribute("totalUsers", userStore.totalUsers());
+		request.setAttribute("totalConvos", convoStore.totalConvos());
+		request.setAttribute("totalMessages", messageStore.totalMessages());
+		request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(
+				request, response);
+	}
 }
