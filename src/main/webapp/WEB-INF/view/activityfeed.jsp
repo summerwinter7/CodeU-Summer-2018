@@ -13,10 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Activity" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.FormatStyle" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.time.ZoneId" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>Activity Feed</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -26,30 +34,46 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <a href="/profile">Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/admin">Admin</a>
     <a href="/activityfeed">Activity Feed</a>
   </nav>
 
   <div id="container">
-    <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+    <h1>Activity Feed</h1>
 
-      <ul>
-        <li><a href="/login">Login</a> to get started.</li>
-        <li>Go to the <a href="/conversations">conversations</a> page to
-            create or join a conversation.</li>
-        <li>View the <a href="/about.jsp">about</a> page to learn more about the
-            project.</li>
-        <li>Check out the <a href="/activityfeed">activity feed</a> for latest activity.</li>
+	<p> This is the activity feed</p>
+	
+	<%
+    List<Activity> activity =
+      (List<Activity>) request.getAttribute("activity");
+    if(activity == null || activity.isEmpty()){
+    %>
+      <p>No recent activity.</p>
+    <%
+    }
+    else{
+    %>
+      <ul class="mdl-list">
+      
+    <%
+      DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
+      for(Activity a : activity){
+    %>
+      <li><%= formatter.format(a.getCreationTime())%> ET 
+        <%= a.getDisplayText() %></li>
+    <%
+      }
+    %>
       </ul>
-    </div>
+    <%
+    }
+    %>
+    <hr/>
   </div>
 </body>
 </html>

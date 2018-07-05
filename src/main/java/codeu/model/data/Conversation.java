@@ -21,11 +21,12 @@ import java.util.UUID;
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
  * created by a User and contain Messages.
  */
-public class Conversation {
+public class Conversation implements Activity{
   public final UUID id;
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  private String displayText;
 
   /**
    * Constructs a new Conversation.
@@ -40,6 +41,7 @@ public class Conversation {
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.displayText = "Conversation created: " + title;
   }
 
   /** Returns the ID of this Conversation. */
@@ -60,5 +62,19 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+  
+  public void setDisplayText(String s) {
+	  displayText = s;
+  }
+
+  @Override
+  public String getDisplayText() {
+	return displayText;
+  }
+
+  @Override
+  public int compareTo(Activity a) {
+	return creation.compareTo(a.getCreationTime());
   }
 }
