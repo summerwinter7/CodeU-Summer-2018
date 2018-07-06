@@ -105,13 +105,11 @@ public class PersistentDataStore {
         // This exists because this is a new feature, so conversations created before
         // I implemented this were not stored with a value for is_public,
         // so this makes the default to be true
-        boolean isPublic;
-        if (entity.getProperty("is_public") == null) {
-        	isPublic = true;
-        } else {
+        boolean isPublic = true;
+        if (entity.getProperty("is_public") != null) {
         	isPublic = ((Boolean)entity.getProperty("is_public")).booleanValue();
         }
-        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, true);
+        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, isPublic);
         conversations.add(conversation);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
