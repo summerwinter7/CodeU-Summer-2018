@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>Admin Page</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -30,24 +31,23 @@
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/admin">Admin</a>
-    <a href="/activityfeed">Activity Feed</a>
+    <a href="/admin.jsp">Admin</a>
   </nav>
 
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+      <h1>Administration</h1>
+      <h2>Site Statistics</h2>
+      <p>
+   		Here are some site stats:
+      </p>
 
       <ul>
-        <li><a href="/login">Login</a> to get started.</li>
-        <li>Go to the <a href="/conversations">conversations</a> page to
-            create or join a conversation.</li>
-        <li>View the <a href="/about.jsp">about</a> page to learn more about the
-            project.</li>
-        <li>Check out the <a href="/activityfeed">activity feed</a> for latest activity.</li>
+        <li>Users: <%=request.getAttribute("totalUsers")%> </li>
+        <li>Conversations: <%=request.getAttribute("totalConvos")%></li>
+        <li>Messages: <%=request.getAttribute("totalMessages") %> </li>
       </ul>
     </div>
   </div>
