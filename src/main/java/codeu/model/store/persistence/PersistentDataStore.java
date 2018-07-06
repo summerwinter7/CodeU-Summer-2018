@@ -67,7 +67,11 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String passwordHash = (String) entity.getProperty("password_hash");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String aboutMe = (String) entity.getProperty("aboutMe");
+        String aboutMe = "";
+        if (entity.getProperty("aboutMe")!=null) {
+        	aboutMe = (String) entity.getProperty("aboutMe");
+        }
+       // String aboutMe = (String) entity.getProperty("aboutMe");
         User user = new User(uuid, userName, passwordHash, creationTime, aboutMe);
         users.add(user);
       } catch (Exception e) {
