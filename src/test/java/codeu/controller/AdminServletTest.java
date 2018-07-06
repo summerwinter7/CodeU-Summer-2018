@@ -52,7 +52,7 @@ public class AdminServletTest {
 	public void testDoGet() throws IOException, ServletException {
 		// test users = 1, convos = 2, messages = 3
 		User user1 = new User(UUID.randomUUID(), "test_name", "password",
-				Instant.EPOCH);
+				Instant.EPOCH, "about me");
 		mockUserStore.addUser(user1);
 
 		Conversation conversation1 = new Conversation(UUID.randomUUID(),
