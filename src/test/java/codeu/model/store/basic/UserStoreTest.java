@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class UserStoreTest {
-
   private UserStore userStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
 
@@ -109,6 +108,13 @@ public class UserStoreTest {
 	    userList.add(USER_THREE);
 	  Assert.assertEquals(userList, userStore.getAllUsers());
   }
+  
+  @Test
+	public void testTotalUsers() {
+		// test total users
+		int totalUsersTest = userStore.totalUsers();
+		Assert.assertTrue(totalUsersTest == 3);
+	}
 
   private void assertEquals(User expectedUser, User actualUser) {
     Assert.assertEquals(expectedUser.getId(), actualUser.getId());

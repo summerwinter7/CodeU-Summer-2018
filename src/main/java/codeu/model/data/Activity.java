@@ -6,7 +6,7 @@ public interface Activity extends Comparable<Activity>{
 	
 	public Instant getCreationTime();
 	
-	public String getMessage();
+	public String getDisplayText();
 	
 	public int compareTo(Activity a);
 }

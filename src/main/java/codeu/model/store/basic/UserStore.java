@@ -16,17 +16,17 @@ package codeu.model.store.basic;
 
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Store class that uses in-memory data structures to hold values and automatically loads from and
- * saves to PersistentStorageAgent. It's a singleton so all servlet classes can access the same
- * instance.
+ * Store class that uses in-memory data structures to hold values and
+ * automatically loads from and saves to PersistentStorageAgent. It's a
+ * singleton so all servlet classes can access the same instance.
  */
 public class UserStore {
-
   /** Singleton instance of UserStore. */
   private static UserStore instance;
 
@@ -131,5 +131,9 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+  
+  /** Returns number of Users stored in Users List */
+  public int totalUsers() {
+		return users.size();
+	}
 }
-

@@ -30,6 +30,7 @@ public class Conversation implements Activity{
   public final String title;
   private boolean isPublic;
   private List<User> members;
+  private String displayText;
 
   /**
    * Constructs a new Conversation.
@@ -46,6 +47,7 @@ public class Conversation implements Activity{
     this.title = title;
     this.isPublic = isPublic;
     this.members = new ArrayList<User>();
+    this.displayText = "Conversation created: " + title;
   }
 
   /** Returns the ID of this Conversation. */
@@ -80,10 +82,13 @@ public class Conversation implements Activity{
 	  return members;
   }
 
+  public void setDisplayText(String s) {
+	  displayText = s;
+  }
+
   @Override
-  public String getMessage() {
-	// TODO: add the owner of the conversation to this message
-	return "Conversation created: " + title;
+  public String getDisplayText() {
+	return displayText;
   }
 
   @Override

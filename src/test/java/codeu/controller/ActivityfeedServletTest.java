@@ -57,10 +57,10 @@ public class ActivityfeedServletTest {
 
 	  @Test
 	  public void testDoGet() throws IOException, ServletException {
-		// Later will add a fake Conversation and fake Messages 
 		List<User> fakeUserList = new ArrayList<>();
 		List<Conversation> fakeConversationList = new ArrayList<>();
 		List<Message> fakeMessageList = new ArrayList<>();
+
 		User user1 = new User(UUID.randomUUID(), "test_name", "password", Instant.EPOCH, "about me");
 		Conversation conversation1 = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_name", Instant.EPOCH.plusSeconds(1), true);
 		Message message1 = new Message(UUID.randomUUID(), UUID.randomUUID(),UUID.randomUUID(), "test_message", Instant.EPOCH.plusSeconds(2));
@@ -78,7 +78,11 @@ public class ActivityfeedServletTest {
 	    Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUserList);
 	    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
 	    Mockito.when(mockMessageStore.getAllMessages()).thenReturn(fakeMessageList);
-
+	    
+	    Mockito.when(mockUserStore.getUser(user1.getId())).thenReturn(user1);
+	    Mockito.when(mockUserStore.getUser(user2.getId())).thenReturn(user2);
+	    Mockito.when(mockConversationStore.getConversationWithID(conversation1.getId())).thenReturn(conversation1);
+	    Mockito.when(mockConversationStore.getConversationWithID(conversation2.getId())).thenReturn(conversation2);
 	    
 	    activityfeedServlet.doGet(mockRequest, mockResponse);
 	    

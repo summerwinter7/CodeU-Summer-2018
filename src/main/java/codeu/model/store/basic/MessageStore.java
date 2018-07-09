@@ -16,17 +16,17 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Store class that uses in-memory data structures to hold values and automatically loads from and
- * saves to PersistentStorageAgent. It's a singleton so all servlet classes can access the same
- * instance.
+ * Store class that uses in-memory data structures to hold values and
+ * automatically loads from and saves to PersistentStorageAgent. It's a
+ * singleton so all servlet classes can access the same instance.
  */
 public class MessageStore {
-
   /** Singleton instance of MessageStore. */
   private static MessageStore instance;
 
@@ -94,4 +94,9 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
+  
+  /** Returns number of Messages stored in Message List */
+  public int totalMessages() {
+		return messages.size();
+	}
 }
