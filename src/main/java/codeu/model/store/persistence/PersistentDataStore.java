@@ -186,7 +186,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-    conversationEntity.setProperty("is_public", true);
+    conversationEntity.setProperty("is_public", conversation.getIsPublic());
     datastore.put(conversationEntity);
   }
 }
