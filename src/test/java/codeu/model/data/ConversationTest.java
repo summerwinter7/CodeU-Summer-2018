@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,7 +37,7 @@ public class ConversationTest {
     Assert.assertEquals(owner, conversation.getOwnerId());
     Assert.assertEquals(title, conversation.getTitle());
     Assert.assertEquals(creation, conversation.getCreationTime());
- //   Assert.assertEquals(isPublic, conversation.getIsPublic());
+    Assert.assertEquals(isPublic, conversation.getIsPublic());
   
   }
   
@@ -46,5 +48,14 @@ public class ConversationTest {
     Message message = new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test", Instant.now().plusSeconds(2));
     Assert.assertEquals(-1, conversation.compareTo(message));
 	  
+  }
+  
+  @Test
+  public void testSetMembers() {
+	Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
+	List<User> members = new ArrayList<User>();
+	members.add(new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me"));
+	conversation.setMembers(members);
+	Assert.assertEquals(members, conversation.getMembers());
   }
 }

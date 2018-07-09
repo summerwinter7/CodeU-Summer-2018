@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,5 +46,16 @@ public class UserTest {
     //Since Conversation and User both implement Activity, we test the compareTo method
     Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now().plusSeconds(2), true);
     Assert.assertEquals(-1, user.compareTo(conversation));
+  }
+  
+  @Test
+  public void testAddConversation() {
+	User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
+	Assert.assertTrue(user.getConversations().isEmpty());
+    Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
+    user.addConversation(conversation);
+    List<Conversation> convos = new ArrayList<>();
+    convos.add(conversation);
+    Assert.assertEquals(user.getConversations(), convos);
   }
 }
