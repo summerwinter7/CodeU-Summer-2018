@@ -51,7 +51,8 @@
           <input type="text" name="conversationTitle">
         </div>
           <div class="form-group">
-            <label class="form-control-label">Add Users:
+            <label class="form-control-label">Add Users:</label>
+            <select id = "userList">
 
         <button type="submit">Create</button>
       </form>
