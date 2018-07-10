@@ -50,7 +50,7 @@ public class AdminServletTest {
 
 	@Test
 	public void testDoGet() throws IOException, ServletException {
-		// test users = 1, convos = 2, messages = 3
+		//added mock clases, user = 1, convos = 2, messages = 3
 		User user1 = new User(UUID.randomUUID(), "test_name", "password", Instant.EPOCH, "about me");
 		mockUserStore.addUser(user1);
 
