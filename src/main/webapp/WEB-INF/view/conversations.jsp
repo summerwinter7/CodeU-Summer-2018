@@ -47,9 +47,11 @@
       <h1>New Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
-            <label class="form-control-label">Title:</label>
+            <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
         </div>
+          <div class="form-group">
+            <label class="form-control-label">Add Users:
 
         <button type="submit">Create</button>
       </form>
