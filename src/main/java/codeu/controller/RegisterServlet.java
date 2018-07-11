@@ -60,8 +60,15 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-
+    
     String password = request.getParameter("password");
+    
+    if (username.length()==0 || password.length()==0) {
+    	request.setAttribute("error", "The username and password cannot be empty");
+        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+        return;
+    }
+
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     String aboutMe = request.getParameter("aboutMe");
 
