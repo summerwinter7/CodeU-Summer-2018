@@ -13,70 +13,90 @@ import org.mockito.Mockito;
 
 public class ConversationStoreTest {
 
-  private ConversationStore conversationStore;
-  private PersistentStorageAgent mockPersistentStorageAgent;
+	private ConversationStore conversationStore;
+	private PersistentStorageAgent mockPersistentStorageAgent;
 
-  private final Conversation CONVERSATION_ONE =
-      new Conversation(
-          UUID.randomUUID(), UUID.randomUUID(), "conversation_one", Instant.ofEpochMilli(1000));
+	private final Conversation CONVERSATION_ONE = new Conversation(
+			UUID.randomUUID(), UUID.randomUUID(), "conversation_one",
+			Instant.ofEpochMilli(1000));
 
-  @Before
-  public void setup() {
-    mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
-    conversationStore = ConversationStore.getTestInstance(mockPersistentStorageAgent);
+	private final Conversation CONVERSATION_TWO = new Conversation(
+			UUID.randomUUID(), UUID.randomUUID(), "conversation_two",
+			Instant.ofEpochMilli(1000));
 
-    final List<Conversation> conversationList = new ArrayList<>();
-    conversationList.add(CONVERSATION_ONE);
-    conversationStore.setConversations(conversationList);
-  }
+	@Before
+	public void setup() {
+		mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
+		conversationStore = ConversationStore
+				.getTestInstance(mockPersistentStorageAgent);
 
-  @Test
-  public void testGetConversationWithTitle_found() {
-    Conversation resultConversation =
-        conversationStore.getConversationWithTitle(CONVERSATION_ONE.getTitle());
+		final List<Conversation> conversationList = new ArrayList<>();
+		conversationList.add(CONVERSATION_ONE);
+		conversationList.add(CONVERSATION_TWO);
+		conversationStore.setConversations(conversationList);
+	}
 
-    assertEquals(CONVERSATION_ONE, resultConversation);
-  }
+	@Test
+	public void testGetConversationWithTitle_found() {
+		Conversation resultConversation = conversationStore
+				.getConversationWithTitle(CONVERSATION_ONE.getTitle());
 
-  @Test
-  public void testGetConversationWithTitle_notFound() {
-    Conversation resultConversation = conversationStore.getConversationWithTitle("unfound_title");
+		assertEquals(CONVERSATION_ONE, resultConversation);
+	}
 
-    Assert.assertNull(resultConversation);
-  }
+	@Test
+	public void testGetConversationWithTitle_notFound() {
+		Conversation resultConversation = conversationStore
+				.getConversationWithTitle("unfound_title");
 
-  @Test
-  public void testIsTitleTaken_true() {
-    boolean isTitleTaken = conversationStore.isTitleTaken(CONVERSATION_ONE.getTitle());
+		Assert.assertNull(resultConversation);
+	}
 
-    Assert.assertTrue(isTitleTaken);
-  }
+	@Test
+	public void testIsTitleTaken_true() {
+		boolean isTitleTaken = conversationStore.isTitleTaken(CONVERSATION_ONE
+				.getTitle());
 
-  @Test
-  public void testIsTitleTaken_false() {
-    boolean isTitleTaken = conversationStore.isTitleTaken("unfound_title");
+		Assert.assertTrue(isTitleTaken);
+	}
 
-    Assert.assertFalse(isTitleTaken);
-  }
+	@Test
+	public void testIsTitleTaken_false() {
+		boolean isTitleTaken = conversationStore.isTitleTaken("unfound_title");
 
-  @Test
-  public void testAddConversation() {
-    Conversation inputConversation =
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+		Assert.assertFalse(isTitleTaken);
+	}
 
-    conversationStore.addConversation(inputConversation);
-    Conversation resultConversation =
-        conversationStore.getConversationWithTitle("test_conversation");
+	@Test
+	public void testAddConversation() {
+		Conversation inputConversation = new Conversation(UUID.randomUUID(),
+				UUID.randomUUID(), "test_conversation", Instant.now());
 
-    assertEquals(inputConversation, resultConversation);
-    Mockito.verify(mockPersistentStorageAgent).writeThrough(inputConversation);
-  }
+		conversationStore.addConversation(inputConversation);
+		Conversation resultConversation = conversationStore
+				.getConversationWithTitle("test_conversation");
 
-  private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
-    Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());
-    Assert.assertEquals(expectedConversation.getOwnerId(), actualConversation.getOwnerId());
-    Assert.assertEquals(expectedConversation.getTitle(), actualConversation.getTitle());
-    Assert.assertEquals(
-        expectedConversation.getCreationTime(), actualConversation.getCreationTime());
-  }
+		assertEquals(inputConversation, resultConversation);
+		Mockito.verify(mockPersistentStorageAgent).writeThrough(
+				inputConversation);
+	}
+
+	@Test
+	public void testTotalConvos() {
+		// Get number of convos
+		int totalConvosTest = conversationStore.totalConvos();
+		Assert.assertTrue(totalConvosTest == 2);
+	}
+
+	private void assertEquals(Conversation expectedConversation,
+			Conversation actualConversation) {
+		Assert.assertEquals(expectedConversation.getId(),
+				actualConversation.getId());
+		Assert.assertEquals(expectedConversation.getOwnerId(),
+				actualConversation.getOwnerId());
+		Assert.assertEquals(expectedConversation.getTitle(),
+				actualConversation.getTitle());
+		Assert.assertEquals(expectedConversation.getCreationTime(),
+				actualConversation.getCreationTime());
+	}
 }
