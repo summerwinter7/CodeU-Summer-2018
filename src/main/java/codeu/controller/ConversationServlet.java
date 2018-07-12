@@ -70,8 +70,10 @@ public class ConversationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
+  //  List<Conversation> conversations = conversationStore.getAllConversations();
+  //  request.setAttribute("conversations", conversations);
+	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
+	request.setAttribute("publicConversations", publicConversations);
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 

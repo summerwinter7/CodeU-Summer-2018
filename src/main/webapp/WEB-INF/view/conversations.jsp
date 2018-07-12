@@ -60,10 +60,11 @@
 
     <h1>Conversations</h1>
 
+	<h2>Public (Anyone can view)</h2>
     <%
-    List<Conversation> conversations =
-      (List<Conversation>) request.getAttribute("conversations");
-    if(conversations == null || conversations.isEmpty()){
+    List<Conversation> publicConversations =
+      (List<Conversation>) request.getAttribute("publicConversations");
+    if(publicConversations == null || publicConversations.isEmpty()){
     %>
       <p>Create a conversation to get started.</p>
     <%
@@ -72,7 +73,7 @@
     %>
       <ul class="mdl-list">
     <%
-      for(Conversation conversation : conversations){
+      for(Conversation conversation : publicConversations){
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
         <%= conversation.getTitle() %></a></li>
