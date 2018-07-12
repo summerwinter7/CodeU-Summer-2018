@@ -30,8 +30,10 @@
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+    <a href="/profile">Profile</a>
     <a href="/about.jsp">About</a>
     <a href="/admin.jsp">Admin</a>
+    <a href="/activityfeed">Activity Feed</a>
   </nav>
 
   <div id="container">
