@@ -68,7 +68,7 @@ public class PersistentDataStore {
         String passwordHash = (String) entity.getProperty("password_hash");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String aboutMe = "";
-        // makes this backwards compatable 
+        // makes this backwards compatible 
         if (entity.getProperty("aboutMe")!=null) {
         	aboutMe = (String) entity.getProperty("aboutMe");
         }
