@@ -55,9 +55,9 @@ public class AdminServletTest {
 		mockUserStore.addUser(user1);
 
 		Conversation conversation1 = new Conversation(UUID.randomUUID(),
-				user1.getId(), "test_name", Instant.EPOCH.plusSeconds(1));
+				user1.getId(), "test_name", Instant.EPOCH.plusSeconds(1), true);
 		Conversation conversation2 = new Conversation(UUID.randomUUID(),
-				user1.getId(), "test_name2", Instant.EPOCH.plusSeconds(4));
+				user1.getId(), "test_name2", Instant.EPOCH.plusSeconds(4), true);
 		mockConvoStore.addConversation(conversation1);
 		mockConvoStore.addConversation(conversation2);
 
