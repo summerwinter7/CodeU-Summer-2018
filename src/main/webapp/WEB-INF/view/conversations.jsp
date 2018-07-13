@@ -15,6 +15,7 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.User" %>
 
 <!DOCTYPE html>
 <html>
@@ -29,10 +30,10 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-      <a href="/profile">Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+    <a href="/profile">Profile</a>
     <a href="/about.jsp">About</a>
     <a href="/admin">Admin</a>
     <a href="/activityfeed">Activity Feed</a>
@@ -46,11 +47,30 @@
 
     <% if(request.getSession().getAttribute("user") != null){ %>
       <h1>New Conversation</h1>
+      <h2>Create Group Conversation:</h2>
       <form action="/conversations" method="POST">
           <div class="form-group">
-            <label class="form-control-label">Title:</label>
+            <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
-        </div>
+          </div>
+          <div class="form-group">
+          <label for="users">Add Users</label>
+          <select>
+            <option value="First Choice">First Choice</option>
+          </select>
+            <%-- <%
+            // List<User> userList = (List<User>) request.getAttribute("user");%>
+            // <select>
+            //    <% for(int i = 0; i < userList.size(); i++) {
+            //           String option = userList.get(i).getName();
+            //     %>
+            //     <option value="<%= option %>"><%=option %></option>
+            //    <% } %>
+            // </select> --%>
+
+
+
+          </div>
 
         <button type="submit">Create</button>
       </form>

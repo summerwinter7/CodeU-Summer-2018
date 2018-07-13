@@ -92,6 +92,7 @@ public class ConversationServlet extends HttpServlet {
     }
 
     User user = userStore.getUser(username);
+    String userLabel = request.getParameter("userLabel");
     if (user == null) {
       // user was not found, don't let them create a conversation
       System.out.println("User not found: " + username);
