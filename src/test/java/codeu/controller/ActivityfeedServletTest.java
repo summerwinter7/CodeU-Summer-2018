@@ -62,10 +62,10 @@ public class ActivityfeedServletTest {
 		List<Message> fakeMessageList = new ArrayList<>();
 
 		User user1 = new User(UUID.randomUUID(), "test_name", "password", Instant.EPOCH, "about me");
-		Conversation conversation1 = new Conversation(UUID.randomUUID(), user1.getId(), "test_name", Instant.EPOCH.plusSeconds(1));
+		Conversation conversation1 = new Conversation(UUID.randomUUID(), user1.getId(), "test_name", Instant.EPOCH.plusSeconds(1), true);
 		Message message1 = new Message(UUID.randomUUID(), conversation1.getId(), user1.getId(), "test_message", Instant.EPOCH.plusSeconds(2));
 		User user2 = new User(UUID.randomUUID(), "test_name2", "password2", Instant.EPOCH.plusSeconds(3), "about me 2");
-		Conversation conversation2 = new Conversation(UUID.randomUUID(), user2.getId(), "test_name2", Instant.EPOCH.plusSeconds(4));
+		Conversation conversation2 = new Conversation(UUID.randomUUID(), user2.getId(), "test_name2", Instant.EPOCH.plusSeconds(4), true);
 		Message message2 = new Message(UUID.randomUUID(), conversation2.getId(), user2.getId(), "test_message2", Instant.EPOCH.plusSeconds(5));
 
 		fakeUserList.add(user1);
