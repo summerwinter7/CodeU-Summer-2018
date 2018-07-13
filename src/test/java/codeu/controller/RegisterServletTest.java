@@ -51,6 +51,30 @@ public class RegisterServletTest {
         .setAttribute("error", "Please enter only letters, numbers, and spaces.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+  
+  @Test
+  public void testDoPost_NullUsername() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+
+    registerServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "You must enter a username and password");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+  
+  @Test
+  public void testDoPost_NullPassword() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("");
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+
+    registerServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "You must enter a username and password");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 
   @Test
   public void testDoPost_NewUser() throws IOException, ServletException {
@@ -77,6 +101,8 @@ public class RegisterServletTest {
   @Test
   public void testDoPost_ExistingUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
