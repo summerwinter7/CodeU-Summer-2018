@@ -60,7 +60,7 @@
 
     <h1>Conversations</h1>
 
-	<h2>Public (Anyone can view)</h2>
+	<h4>Public Conversations (Anyone can view):</h4>
     <%
     List<Conversation> publicConversations =
       (List<Conversation>) request.getAttribute("publicConversations");
