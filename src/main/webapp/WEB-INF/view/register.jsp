@@ -50,7 +50,11 @@
       <label for="password">Password: </label>
       <br/>
       <input type="password" name="password" id="password">
-      <br/><br/>
+      <br/>
+      <label for="aboutMe">About Me (optional): </label>
+      <br/>
+      <textarea name="aboutMe" id="aboutMe" rows="5" cols="60"></textarea>
+      <br/>
       <button type="submit">Submit</button>
     </form>
   </div>
