@@ -22,7 +22,7 @@ public class ConversationStoreTest {
 
 	private final Conversation CONVERSATION_TWO = new Conversation(
 			UUID.randomUUID(), UUID.randomUUID(), "conversation_two",
-			Instant.ofEpochMilli(1000), true);
+			Instant.ofEpochMilli(1000), false);
 
 	@Before
 	public void setup() {
@@ -34,6 +34,13 @@ public class ConversationStoreTest {
 		conversationList.add(CONVERSATION_ONE);
 		conversationList.add(CONVERSATION_TWO);
 		conversationStore.setConversations(conversationList);
+	}
+	
+	@Test
+	public void testGetPublicConversations() {
+		List<Conversation> publicConversationList = new ArrayList<>();
+		publicConversationList.add(CONVERSATION_ONE);
+		Assert.assertEquals(publicConversationList, conversationStore.getAllPublicConversations());
 	}
 
 	@Test

@@ -63,6 +63,9 @@ public class ConversationStore {
 
 	/** The in-memory list of Conversations. */
 	private List<Conversation> conversations;
+	
+	/** The in-memory list of Public Conversations that everyone can view */
+	private List<Conversation> publicConversations;
 
 	/**
 	 * This class is a singleton, so its constructor is private. Call
@@ -77,6 +80,11 @@ public class ConversationStore {
 	public List<Conversation> getAllConversations() {
 		return conversations;
 	}
+	
+	/** Access the current set of public conversations */
+	public List<Conversation> getAllPublicConversations() {
+		return publicConversations;
+	}
 
 	/**
 	 * Add a new conversation to the current set of conversations known to the
@@ -84,6 +92,9 @@ public class ConversationStore {
 	 */
 	public void addConversation(Conversation conversation) {
 		conversations.add(conversation);
+		if (conversation.getIsPublic()) {
+			publicConversations.add(conversation);
+		}
 		persistentStorageAgent.writeThrough(conversation);
 	}
 
@@ -125,6 +136,12 @@ public class ConversationStore {
 	/** Sets the List of Conversations stored by this ConversationStore. */
 	public void setConversations(List<Conversation> conversations) {
 		this.conversations = conversations;
+		this.publicConversations = new ArrayList<Conversation>();
+		for (Conversation conversation : this.conversations) {
+			if (conversation.getIsPublic()) {
+				publicConversations.add(conversation);
+			}
+		}
 	}
   
   /**Returns number of Conversations stored in Conversations List*/
