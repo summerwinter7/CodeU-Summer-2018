@@ -55,6 +55,7 @@
           <label for="userLabel">Add User</label>
           <select name = "userLabel" id= "userLabel" style="width: 300px;">
               <option value = "add user">add user</option>
+              //TODO:Get list of users from servlet class set users as option values
           </select>
         </div>
 
