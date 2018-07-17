@@ -45,13 +45,33 @@
     <% } %>
 
     <% if(request.getSession().getAttribute("user") != null){ %>
-      <h1>New Conversation</h1>
+      <h1>Create Group Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
           <input type="text" name="conversationTitle">
-        </div>
+          </div>
+          <div class="form-group">
+            <label for="AccessControl">Set Access</label>
+            <select name="AccessControl" style="width:300px;">
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div class="form-group"
+            <h2>(Only if Conversation is private)</h2>
+            <label for="Userlabel">Add Users</label>
+            <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
+            <select name="UserLabel" style="width:300px;">
+              <%for (User user:users){ %>
+                <%if(user.getName() == null){
+                  continue;
+                }%>
+                  <option value="<%=user.getName()%>"><%=user.getName()%></option>
 
+              <%}%>
+            </select>
+          </div>
         <button type="submit">Create</button>
       </form>
 

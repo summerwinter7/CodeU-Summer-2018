@@ -72,7 +72,9 @@ public class ConversationServlet extends HttpServlet {
       throws IOException, ServletException {
 	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
 	request.setAttribute("publicConversations", publicConversations);
-    request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+  List<User> users = userStore.getAllUsers();
+  request.setAttribute("ConvoUsers",convoUser);
+  request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 
   /**
@@ -105,7 +107,7 @@ public class ConversationServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
       return;
     }
-    
+
     if (conversationTitle.length()==0) {
         request.setAttribute("error", "Conversation name cannot be empty");
         request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
