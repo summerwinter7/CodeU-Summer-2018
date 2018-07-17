@@ -15,7 +15,8 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
-
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,7 +49,7 @@
       <h1>Create Group Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
-            <label class="form-control-label">Title:</label>
+            <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
           </div>
           <div class="form-group">
@@ -58,11 +59,12 @@
               <option value="Private">Private</option>
             </select>
           </div>
+          <h4>(Only if Conversation is private)</h4>
           <div class="form-group"
-            <h2>(Only if Conversation is private)</h2>
             <label for="Userlabel">Add Users</label>
             <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
             <select name="UserLabel" style="width:300px;">
+               <option value="add user">add user</option>
               <%for (User user:users){ %>
                 <%if(user.getName() == null){
                   continue;
