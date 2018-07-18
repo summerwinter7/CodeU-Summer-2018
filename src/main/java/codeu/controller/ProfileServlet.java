@@ -25,6 +25,7 @@ public class ProfileServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/chat.jsp");
   }
 
   @Override
