@@ -53,9 +53,9 @@ public class UserTest {
 	User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
 	Assert.assertTrue(user.getConversations().isEmpty());
     Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
-    user.addConversation(conversation);
-    List<Conversation> convos = new ArrayList<>();
-    convos.add(conversation);
+    user.addConversation(conversation.getId());
+    List<UUID> convos = new ArrayList<UUID>();
+    convos.add(conversation.getId());
     Assert.assertEquals(user.getConversations(), convos);
   }
 }

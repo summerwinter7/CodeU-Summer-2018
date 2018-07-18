@@ -53,8 +53,9 @@ public class ConversationTest {
   @Test
   public void testSetMembers() {
 	Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
-	List<User> members = new ArrayList<User>();
-	members.add(new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me"));
+	List<UUID> members = new ArrayList<UUID>();
+	User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
+	members.add(user.getId());
 	conversation.setMembers(members);
 	Assert.assertEquals(members, conversation.getMembers());
   }
