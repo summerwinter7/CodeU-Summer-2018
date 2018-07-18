@@ -132,13 +132,15 @@ public class ConversationServlet extends HttpServlet {
 
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
-    /*
+    
     List<UUID> members = new ArrayList<UUID>();
-    members.add(userStore.getUser("summer").getId());
+    User summer = userStore.getUser("summer");
+    members.add(summer.getId());
     System.out.println("created convo: " + members);
     conversation.setMembers(members);
-    userStore.getUser("summer").addConversation(conversation.getId());
-    */
+    summer.addConversation(conversation.getId());
+    userStore.updateUser(summer);
+    
     
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
