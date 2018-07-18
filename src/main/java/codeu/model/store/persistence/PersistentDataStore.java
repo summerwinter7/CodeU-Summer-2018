@@ -72,7 +72,17 @@ public class PersistentDataStore {
         if (entity.getProperty("aboutMe")!=null) {
         	aboutMe = (String) entity.getProperty("aboutMe");
         }
+        List<UUID> conversations = new ArrayList<UUID>();
+        if (entity.getProperty("conversations") != null) {
+        	List<String> stringConvos = (List<String>)entity.getProperty("conversations");
+            System.out.println("string conversations: " + stringConvos);
+            for (String stringConvo : stringConvos) {
+            	conversations.add(UUID.fromString(stringConvo));
+            }
+        }
+        System.out.println("UUID convos: " + conversations);
         User user = new User(uuid, userName, passwordHash, creationTime, aboutMe);
+        user.setConversations(conversations);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -113,7 +123,17 @@ public class PersistentDataStore {
         if (entity.getProperty("is_public") != null) {
         	isPublic = ((Boolean)entity.getProperty("is_public")).booleanValue();
         }
+        List<UUID> members = new ArrayList<UUID>();
+        if (entity.getProperty("members") != null) {
+        	List<String> stringMembers = (List<String>)entity.getProperty("members");
+            System.out.println("string members: " + stringMembers);
+            for (String stringMember : stringMembers) {
+            	members.add(UUID.fromString(stringMember));
+            }
+        }
+        System.out.println("UUID members: " + members);
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, isPublic);
+        conversation.setMembers(members);
         conversations.add(conversation);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -169,6 +189,13 @@ public class PersistentDataStore {
     userEntity.setProperty("password_hash", user.getPasswordHash());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("aboutMe",user.getAboutMe().toString());
+    List<UUID> conversations = user.getConversations();
+    List<String> stringConvos = new ArrayList<String>();
+    for (UUID convo : conversations) {
+    	stringConvos.add(convo.toString());
+    }
+    System.out.println("stored conversations: " + stringConvos);
+    userEntity.setProperty("conversations", stringConvos);
     datastore.put(userEntity);
   }
 
@@ -191,6 +218,13 @@ public class PersistentDataStore {
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     conversationEntity.setProperty("is_public", conversation.getIsPublic());
+    List<UUID> members = conversation.getMembers();
+    List<String> stringMembers = new ArrayList<String>();
+    for (UUID member : members) {
+    	stringMembers.add(member.toString());
+    }
+    System.out.println("stored members: " + stringMembers);
+    conversationEntity.setProperty("members", stringMembers);
     datastore.put(conversationEntity);
   }
 }

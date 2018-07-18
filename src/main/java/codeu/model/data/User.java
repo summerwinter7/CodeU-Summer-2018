@@ -71,6 +71,10 @@ public class User implements Activity{
 	  return conversations;
   }
   
+  public void setConversations(List<UUID> conversations) {
+	  this.conversations = conversations;
+  }
+  
   /** Adds the conversation to the list of conversations the user is a member of. */
   public void addConversation(UUID conversation) {
 	  conversations.add(conversation);

@@ -20,6 +20,7 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -120,8 +121,11 @@ public class ConversationServlet extends HttpServlet {
     }
 
     Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), true);
-
+        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
+    List<UUID> members = new ArrayList<UUID>();
+    members.add(userStore.getUser("summer").getId());
+    System.out.println("created convo: " + members);
+    conversation.setMembers(members);
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
   }
