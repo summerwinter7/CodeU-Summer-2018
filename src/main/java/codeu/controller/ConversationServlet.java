@@ -130,18 +130,17 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
+    boolean isPublic = true; // This will eventually be set from request's attribute
     Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
+        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
     
-    List<UUID> members = new ArrayList<UUID>();
-    User summer = userStore.getUser("summer");
-    members.add(summer.getId());
-    System.out.println("created convo: " + members);
+    List<UUID> members = new ArrayList<UUID>(); // This will also come from request's attribute
     conversation.setMembers(members);
-    summer.addConversation(conversation.getId());
-    userStore.updateUser(summer);
-    
-    
+    for (UUID memberId : members) {
+    	User member = userStore.getUser(memberId);
+    	member.addConversation(conversation.getId());
+    	userStore.updateUser(member); // update for persistant data store
+    }
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
   }
