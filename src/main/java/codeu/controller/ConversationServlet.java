@@ -73,6 +73,16 @@ public class ConversationServlet extends HttpServlet {
       throws IOException, ServletException {
 	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
 	request.setAttribute("publicConversations", publicConversations);
+    String username = (String) request.getSession().getAttribute("user");
+    List<Conversation> privateConversations = new ArrayList<Conversation>();
+    if (username != null) {
+    	User user = userStore.getUser(username);
+    	List<UUID> privateConversationsUUID = user.getConversations();
+    	for (UUID convoUUID : privateConversationsUUID) {
+    		privateConversations.add(conversationStore.getConversationWithID(convoUUID));
+    	}
+    }
+	request.setAttribute("privateConversations", privateConversations);
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 
@@ -122,10 +132,14 @@ public class ConversationServlet extends HttpServlet {
 
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
+    /*
     List<UUID> members = new ArrayList<UUID>();
     members.add(userStore.getUser("summer").getId());
     System.out.println("created convo: " + members);
     conversation.setMembers(members);
+    userStore.getUser("summer").addConversation(conversation.getId());
+    */
+    
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
   }
