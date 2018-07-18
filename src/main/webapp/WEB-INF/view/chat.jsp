@@ -51,7 +51,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
     <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <a href="/profile">Profile</a>
+    <a href="/profile/<%=request.getSession().getAttribute("user")%>">Profile</a>
     <% } else { %>
       <a href="/login">Login</a>
     <% } %>
@@ -75,10 +75,11 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           for (Message message : messages) {
             String author = UserStore.getInstance()
               .getUser(message.getAuthorId()).getName();
+
         %>
         <div class="username"></div>
           <p class="chat-message" value="<%=message.getId()%>"><li><strong>
-          <a id="author" href="/profile"><%= author %></a>:</strong><%= message.getContent() %></li></p>
+          <a id="author" href="/profile/<%=author%>"><%= author %></a>:</strong><%= message.getContent() %></li></p>
         <%
           }
         %>
