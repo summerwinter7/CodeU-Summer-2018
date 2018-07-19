@@ -6,6 +6,7 @@ import codeu.model.data.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.After;
@@ -43,7 +44,11 @@ public class PersistentDataStoreTest {
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant creationOne = Instant.ofEpochMilli(1000);
     String aboutMeOne = "aboutMe_one";
+    Conversation convoOne = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test_One", Instant.now(), true);
+    List<UUID> convoOneList = new ArrayList<UUID>();
+    convoOneList.add(convoOne.getId());
     User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne);
+    inputUserOne.addConversation(convoOne.getId());
 
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
@@ -51,8 +56,12 @@ public class PersistentDataStoreTest {
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String aboutMeTwo = "aboutMe_two";
+    Conversation convoTwo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test_Two", Instant.now(), true);
+    List<UUID> convoTwoList = new ArrayList<UUID>();
+    convoTwoList.add(convoTwo.getId());
     User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo);
-
+    inputUserTwo.addConversation(convoTwo.getId());
+    
     // save
     persistentDataStore.writeThrough(inputUserOne);
     persistentDataStore.writeThrough(inputUserTwo);
@@ -67,6 +76,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(aboutMeOne, resultUserOne.getAboutMe());
+    Assert.assertEquals(convoOneList,  resultUserOne.getConversations());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
@@ -74,6 +84,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(aboutMeTwo, resultUserTwo.getAboutMe());
+    Assert.assertEquals(convoTwoList,  resultUserTwo.getConversations());
   }
 
   @Test
@@ -82,13 +93,19 @@ public class PersistentDataStoreTest {
     UUID ownerOne = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String titleOne = "Test_Title";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne, true);
+    boolean isPublicOne = true;
+    Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne, isPublicOne);
 
     UUID idTwo = UUID.fromString("10000002-2222-3333-4444-555555555555");
     UUID ownerTwo = UUID.fromString("10000003-2222-3333-4444-555555555555");
     String titleTwo = "Test_Title_Two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo, true);
+    boolean isPublicTwo = false;
+    User userTwo = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
+    List<UUID> membersTwo = new ArrayList<UUID>();
+    membersTwo.add(userTwo.getId());
+    Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo, isPublicTwo);
+    inputConversationTwo.setMembers(membersTwo);
 
     // save
     persistentDataStore.writeThrough(inputConversationOne);
@@ -103,12 +120,16 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(ownerOne, resultConversationOne.getOwnerId());
     Assert.assertEquals(titleOne, resultConversationOne.getTitle());
     Assert.assertEquals(creationOne, resultConversationOne.getCreationTime());
+    Assert.assertEquals(isPublicOne, resultConversationOne.getIsPublic());
+    Assert.assertTrue(resultConversationOne.getMembers().isEmpty());
 
     Conversation resultConversationTwo = resultConversations.get(1);
     Assert.assertEquals(idTwo, resultConversationTwo.getId());
     Assert.assertEquals(ownerTwo, resultConversationTwo.getOwnerId());
     Assert.assertEquals(titleTwo, resultConversationTwo.getTitle());
     Assert.assertEquals(creationTwo, resultConversationTwo.getCreationTime());
+    Assert.assertEquals(isPublicTwo, resultConversationTwo.getIsPublic());
+    Assert.assertEquals(membersTwo, resultConversationTwo.getMembers());
   }
 
   @Test

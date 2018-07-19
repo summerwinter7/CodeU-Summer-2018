@@ -26,7 +26,7 @@ public class User implements Activity{
   private final String passwordHash;
   private final Instant creation;
   private String aboutMe;
-  private List<Conversation> conversations;
+  private List<UUID> conversations;
 
   /**
    * Constructs a new User.
@@ -42,7 +42,7 @@ public class User implements Activity{
     this.passwordHash = passwordHash;
     this.creation = creation;
     this.aboutMe = aboutMe;
-    this.conversations = new ArrayList<Conversation>();
+    this.conversations = new ArrayList<UUID>();
   }
 
   /** Returns the ID of this User. */
@@ -66,12 +66,16 @@ public class User implements Activity{
   }
   
   /** Returns the list of all conversations this user is a member of. */
-  public List<Conversation> getConversations() {
+  public List<UUID> getConversations() {
 	  return conversations;
   }
   
+  public void setConversations(List<UUID> conversations) {
+	  this.conversations = conversations;
+  }
+  
   /** Adds the conversation to the list of conversations the user is a member of. */
-  public void addConversation(Conversation conversation) {
+  public void addConversation(UUID conversation) {
 	  conversations.add(conversation);
   }
 
