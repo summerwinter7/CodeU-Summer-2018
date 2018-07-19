@@ -38,6 +38,6 @@ public class ProfileServlet extends HttpServlet {
       user.setAboutMe(aboutMe);
       UserStore.getInstance().updateUser(user);
     }
-    response.sendRedirect("/profile");
+    response.sendRedirect("/profile/" + username);
   }
 }
