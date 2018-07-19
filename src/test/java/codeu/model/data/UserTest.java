@@ -58,4 +58,15 @@ public class UserTest {
     convos.add(conversation.getId());
     Assert.assertEquals(user.getConversations(), convos);
   }
+  
+  @Test
+  public void testSetConversations() {
+	User user = new User(UUID.randomUUID(), "test", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
+	Assert.assertTrue(user.getConversations().isEmpty());
+	Conversation conversation = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "Test", Instant.now(), true);
+	List<UUID> convos = new ArrayList<UUID>();
+	convos.add(conversation.getId());
+	user.setConversations(convos);
+	Assert.assertEquals(user.getConversations(), convos);
+  }
 }

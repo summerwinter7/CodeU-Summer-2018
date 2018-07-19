@@ -26,7 +26,6 @@ public class User implements Activity{
   private final String passwordHash;
   private final Instant creation;
   private String aboutMe;
-  //private List<Conversation> conversations;
   private List<UUID> conversations;
 
   /**

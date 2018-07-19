@@ -75,12 +75,10 @@ public class PersistentDataStore {
         List<UUID> conversations = new ArrayList<UUID>();
         if (entity.getProperty("conversations") != null) {
         	List<String> stringConvos = (List<String>)entity.getProperty("conversations");
-            System.out.println("string conversations: " + stringConvos);
             for (String stringConvo : stringConvos) {
             	conversations.add(UUID.fromString(stringConvo));
             }
         }
-        System.out.println("UUID convos: " + conversations);
         User user = new User(uuid, userName, passwordHash, creationTime, aboutMe);
         user.setConversations(conversations);
         users.add(user);
@@ -126,12 +124,10 @@ public class PersistentDataStore {
         List<UUID> members = new ArrayList<UUID>();
         if (entity.getProperty("members") != null) {
         	List<String> stringMembers = (List<String>)entity.getProperty("members");
-            System.out.println("string members: " + stringMembers);
             for (String stringMember : stringMembers) {
             	members.add(UUID.fromString(stringMember));
             }
         }
-        System.out.println("UUID members: " + members);
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, isPublic);
         conversation.setMembers(members);
         conversations.add(conversation);
@@ -194,7 +190,6 @@ public class PersistentDataStore {
     for (UUID convo : conversations) {
     	stringConvos.add(convo.toString());
     }
-    System.out.println("stored conversations: " + stringConvos);
     userEntity.setProperty("conversations", stringConvos);
     datastore.put(userEntity);
   }
@@ -223,7 +218,6 @@ public class PersistentDataStore {
     for (UUID member : members) {
     	stringMembers.add(member.toString());
     }
-    System.out.println("stored members: " + stringMembers);
     conversationEntity.setProperty("members", stringMembers);
     datastore.put(conversationEntity);
   }
