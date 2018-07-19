@@ -45,11 +45,18 @@
     <% } %>
 
     <% if(request.getSession().getAttribute("user") != null){ %>
-      <h1>New Conversation</h1>
+      <h1>Create Group Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
-            <label class="form-control-label">Title:</label>
+            <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
+         </div>
+        <div class="form-group">
+          <label for="userLabel">Add User</label>
+          <select name = "userLabel" id= "userLabel" style="width: 300px;">
+              <option value = "add user">add user</option>
+              //TODO:Get list of users from servlet class set users as option values
+          </select>
         </div>
 
         <button type="submit">Create</button>
