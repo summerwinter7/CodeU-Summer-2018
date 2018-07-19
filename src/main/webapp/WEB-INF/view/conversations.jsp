@@ -64,7 +64,6 @@
             <label for="Userlabel">Add Users</label>
             <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
             <select name="UserLabel" style="width:300px;">
-               <option value="add user">add user</option>
               <%for (User user:users){ %>
                 <%if(user.getName() == null){
                   continue;

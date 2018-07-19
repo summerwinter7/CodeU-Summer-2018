@@ -71,9 +71,16 @@ public class ConversationServletTest {
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), true));
     Mockito.when(mockConversationStore.getAllPublicConversations()).thenReturn(fakeConversationList);
 
+    List<User> fakeUserList = new ArrayList<>();
+    fakeUserList.add(
+      new User(UUID.randomUUID(),"test_username", "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+      Instant.now(), "test_aboutMe"));
+      Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUserList);
+
     conversationServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationList);
+    Mockito.verify(mockRequest).setAttribute("ConvoUsers", fakeUserList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
@@ -120,7 +127,7 @@ public class ConversationServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "Please enter only letters and numbers.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  
+
   @Test
   public void testDoPost_NullConversationName() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("");
