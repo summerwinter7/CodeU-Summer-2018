@@ -67,25 +67,20 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <hr/>
 
-    <div class="GroupChat" id="chat">
-      <div class="Chat">
-        <div class="chatName"
-          <ul>
-        <%
-          for (Message message : messages) {
-            String author = UserStore.getInstance()
-              .getUser(message.getAuthorId()).getName();
+    <div id="chat">
+      <ul>
+    <%
+      for (Message message : messages) {
+        String author = UserStore.getInstance()
+          .getUser(message.getAuthorId()).getName();
 
-        %>
-        <div class="username"></div>
-          <p class="chat-message" value="<%=message.getId()%>"><li><strong>
-          <a id="author" href="/profile/<%=author%>"><%= author %></a>:</strong><%= message.getContent() %></li></p>
-        <%
-          }
-        %>
-          </ul>
-        </div>
-      </div>
+    %>
+      <li><strong><a href="/profile/<%= author %>">
+       <%= author %></a>:</strong><%= message.getContent() %></li>
+    <%
+      }
+    %>
+      </ul>
     </div>
 
     <hr/>
