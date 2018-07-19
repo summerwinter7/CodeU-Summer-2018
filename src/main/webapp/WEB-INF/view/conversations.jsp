@@ -55,6 +55,7 @@
           <div class="form-group">
             <label for="AccessControl">Set Access</label>
             <select name="AccessControl" style="width:300px;">
+              <option disabled selected value> -- select an access -- </option>
               <option value="Public">Public</option>
               <option value="Private">Private</option>
             </select>
@@ -64,6 +65,7 @@
             <label for="Userlabel">Add Users</label>
             <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
             <select name="UserLabel" style="width:300px;">
+              <option disabled selected value> -- select a user -- </option>
               <%for (User user:users){ %>
                 <%if(user.getName() == null){
                   continue;
