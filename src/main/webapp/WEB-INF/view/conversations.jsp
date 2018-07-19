@@ -15,7 +15,6 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
 
 <!DOCTYPE html>
 <html>
@@ -55,10 +54,7 @@
         <div class="form-group">
           <label for="userLabel">Add User</label>
           <select name = "userLabel" id= "userLabel" style="width: 300px;">
-              <option value = "add user">add user</option>
-              <c:forEach var = "user" value ="${users.getAllUsers()}">
-              	<option>${user}</option>
-              </c:forEach>
+             //TODO:Get list of users from servlet class set users as option values
           </select>
         </div>
 
