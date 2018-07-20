@@ -59,7 +59,7 @@ public class ActivityfeedServlet extends HttpServlet{
 	private List<Activity> buildList() {
 		List<Activity> activity = new ArrayList<>();
 		List<User> users = userStore.getAllUsers();
-		List<Conversation> conversations = conversationStore.getAllConversations();
+		List<Conversation> conversations = conversationStore.getAllPublicConversations();
 		List<Message> messages = messageStore.getAllMessages();
 		// adds users individually to avoid casting with generics issue
 		for (User user : users) {
@@ -74,7 +74,9 @@ public class ActivityfeedServlet extends HttpServlet{
 			User author = userStore.getUser(message.getAuthorId());
 			Conversation conversation = conversationStore.getConversationWithID(message.getConversationId());
 			message.setDisplayText(author.getName() + " sent message: \"" + message.getContent() + "\"" + " to conversation: " + conversation.getTitle());
-			activity.add(message);
+			if (conversation.getIsPublic()) {
+				activity.add(message);
+			}
 		}
 		Collections.sort(activity, Collections.reverseOrder());
 		return activity;

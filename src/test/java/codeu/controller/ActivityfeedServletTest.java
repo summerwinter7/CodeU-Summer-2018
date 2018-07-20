@@ -76,7 +76,7 @@ public class ActivityfeedServletTest {
 		fakeMessageList.add(message2);
 		
 	    Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUserList);
-	    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+	    Mockito.when(mockConversationStore.getAllPublicConversations()).thenReturn(fakeConversationList);
 	    Mockito.when(mockMessageStore.getAllMessages()).thenReturn(fakeMessageList);
 	    
 	    Mockito.when(mockUserStore.getUser(user1.getId())).thenReturn(user1);
