@@ -25,7 +25,7 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">["hip", hip] Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -66,6 +66,22 @@
     <% } %>
 
     <h1>Conversations</h1>
+    <% 
+    List<Conversation> privateConversations = 
+	  (List<Conversation>) request.getAttribute("privateConversations");
+    if(request.getSession().getAttribute("user") != null && !privateConversations.isEmpty()) {  %>
+    <h4>Private Conversations (Only group members can view):</h4>
+    	<ul class="mdl-list">
+    	<%
+     	  for(Conversation conversation : privateConversations){
+   		%>
+      		<li><a href="/chat/<%= conversation.getTitle() %>">
+        	<%= conversation.getTitle() %></a></li>
+    	<%
+      	  }
+    	%>
+      </ul>
+    <%} %>
 
 	<h4>Public Conversations (Anyone can view):</h4>
     <%
