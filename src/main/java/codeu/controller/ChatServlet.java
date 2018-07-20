@@ -103,12 +103,14 @@ public class ChatServlet extends HttpServlet {
     }
 
     UUID conversationId = conversation.getId();
+    //List of members and new userList to store usernames 
     List<UUID> members = conversation.getMembers();
-    List<User> userList = new ArrayList<User>();
+    List<String> userList = new ArrayList<String>();
+    //UUID member converted to username and added to userList
     for(UUID member : members){
-    	userList.add(conversation.getUserName(member));
+    	userList.add(userStore.getUser(member).getName());
     }
-
+    
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
 
     request.setAttribute("conversation", conversation);

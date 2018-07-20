@@ -20,16 +20,19 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +82,16 @@ public class ChatServletTest {
         new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now(), true);
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
-
+    
+    UUID fakeUserId = UUID.randomUUID();
+    User fakeUser1 = new User(fakeUserId, "fake_user", "test", Instant.now(), "testing");
+    fakeUser1.addConversation(fakeConversationId);
+    List<UUID> fakeMembers = fakeConversation.getMembers();
+    List<String> fakeUserList = new ArrayList<String>();
+    for(UUID fakeMember : fakeMembers){
+    	fakeUserList.add(mockUserStore.getUser(fakeMember).getName());
+    }
+    
     List<Message> fakeMessageList = new ArrayList<>();
     fakeMessageList.add(
         new Message(
@@ -95,6 +107,7 @@ public class ChatServletTest {
 
     Mockito.verify(mockRequest).setAttribute("conversation", fakeConversation);
     Mockito.verify(mockRequest).setAttribute("messages", fakeMessageList);
+    Mockito.verify(mockRequest).setAttribute("member", fakeUserList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 

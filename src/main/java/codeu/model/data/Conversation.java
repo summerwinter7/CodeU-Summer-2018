@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import codeu.model.store.basic.UserStore;
-
 /**
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
  * created by a User and contain Messages.
@@ -33,8 +31,6 @@ public class Conversation implements Activity{
   private boolean isPublic;
   private List<UUID> members;
   private String displayText;
-  
-  private UserStore userStore;
 
   /**
    * Constructs a new Conversation.
@@ -86,9 +82,6 @@ public class Conversation implements Activity{
 	  return members;
   }
   
-  public User getUserName(UUID uuid){
-	  return userStore.getUser(uuid);
-  }
   public void setDisplayText(String s) {
 	  displayText = s;
   }
