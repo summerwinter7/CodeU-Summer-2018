@@ -111,6 +111,15 @@ public class ChatServlet extends HttpServlet {
     	userList.add(userStore.getUser(member).getName());
     }
     
+    String username = (String) request.getSession().getAttribute("user");
+    //If the user is not a member of the private conversation, the conversation shouldn't appear 
+    if (!conversation.getIsPublic()) {
+    	if (username == null ||  !members.contains(userStore.getUser(username).getId())) {
+    		response.sendRedirect("/conversations");
+    		return;
+    	}
+    }
+    
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
 
     request.setAttribute("conversation", conversation);
