@@ -103,7 +103,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <a href="" style="float: right">&#8635;</a></h1>
     <div id="members">
       <ul>
-    	<li>Members: <%=request.getAttribute("getMembers")%> </li>
+    	<li>Members: <%=request.getAttribute("member")%> </li>
       </ul>
     </div>
 
