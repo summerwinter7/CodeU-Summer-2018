@@ -66,6 +66,7 @@ public class ConversationServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
+<<<<<<< HEAD
     List<Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), true));
@@ -81,6 +82,33 @@ public class ConversationServletTest {
 
     Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationList);
     Mockito.verify(mockRequest).setAttribute("ConvoUsers", fakeUserList);
+=======
+    List<Conversation> fakeConversationListPublic = new ArrayList<>();
+    fakeConversationListPublic.add(
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation_public", Instant.now(), true));
+    Mockito.when(mockConversationStore.getAllPublicConversations()).thenReturn(fakeConversationListPublic);
+    
+    //tests the private conversation portion
+    List<Conversation> fakeConversationListPrivate = new ArrayList<Conversation>();
+    List<UUID> fakeConvoListIds = new ArrayList<UUID>();
+    Conversation convo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation_private", Instant.now(), false);
+    fakeConversationListPrivate.add(convo);
+    fakeConvoListIds.add(convo.getId());
+    Mockito.when(mockConversationStore.getConversationWithID(convo.getId())).thenReturn(convo);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(), "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    fakeUser.setConversations(fakeConvoListIds);
+    conversationServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationListPublic);
+    Mockito.verify(mockRequest).setAttribute("privateConversations", fakeConversationListPrivate);
+>>>>>>> 83ac52c034b006b9b071d362bc397257fdeea47e
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 

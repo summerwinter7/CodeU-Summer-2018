@@ -30,11 +30,11 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">["hip", hip] Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-      <a href="/profile">Profile</a>
+      <a href="/profile/<%=request.getSession().getAttribute("user")%>">Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
@@ -48,7 +48,7 @@
     <h1>Activity Feed</h1>
 
 	<p> This is the activity feed</p>
-	
+
 	<%
     List<Activity> activity =
       (List<Activity>) request.getAttribute("activity");
@@ -60,12 +60,12 @@
     else{
     %>
       <ul class="mdl-list">
-      
+
     <%
       DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
       for(Activity a : activity){
     %>
-      <li><%= formatter.format(a.getCreationTime())%> ET 
+      <li><%= formatter.format(a.getCreationTime())%> ET
         <%= a.getDisplayText() %></li>
     <%
       }

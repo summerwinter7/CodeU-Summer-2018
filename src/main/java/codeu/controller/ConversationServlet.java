@@ -20,6 +20,7 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -68,14 +69,27 @@ public class ConversationServlet extends HttpServlet {
    * conversations from the model and forwards to conversations.jsp for rendering the list.
    */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
-	request.setAttribute("publicConversations", publicConversations);
-  List<User> users = userStore.getAllUsers();
-  request.setAttribute("ConvoUsers",users);
-  request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
-  }
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+    	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
+    	request.setAttribute("publicConversations", publicConversations);
+      List<User> users = userStore.getAllUsers();
+
+      request.setAttribute("ConvoUsers",users);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+
+      String username = (String) request.getSession().getAttribute("user");
+      List<Conversation> privateConversations = new ArrayList<Conversation>();
+      if (username != null) {
+      	User user = userStore.getUser(username);
+      	List<UUID> privateConversationsUUID = user.getConversations();
+      	for (UUID convoUUID : privateConversationsUUID) {
+      		privateConversations.add(conversationStore.getConversationWithID(convoUUID));
+      	}
+      }
+  	  request.setAttribute("privateConversations", privateConversations);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+    }
 
   /**
    * This function fires when a user submits the form on the conversations page. It gets the
@@ -86,45 +100,53 @@ public class ConversationServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    String username = (String) request.getSession().getAttribute("user");
-    if (username == null) {
-      // user is not logged in, don't let them create a conversation
-      response.sendRedirect("/conversations");
-      return;
-    }
+      String username = (String) request.getSession().getAttribute("user");
+      if (username == null) {
+        // user is not logged in, don't let them create a conversation
+        response.sendRedirect("/conversations");
+        return;
+      }
 
-    User user = userStore.getUser(username);
-    if (user == null) {
-      // user was not found, don't let them create a conversation
-      System.out.println("User not found: " + username);
-      response.sendRedirect("/conversations");
-      return;
-    }
+      User user = userStore.getUser(username);
+      if (user == null) {
+        // user was not found, don't let them create a conversation
+        System.out.println("User not found: " + username);
+        response.sendRedirect("/conversations");
+        return;
+      }
 
-    String conversationTitle = request.getParameter("conversationTitle");
-    if (!conversationTitle.matches("[\\w*]*")) {
-      request.setAttribute("error", "Please enter only letters and numbers.");
-      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
-      return;
-    }
-
-    if (conversationTitle.length()==0) {
-        request.setAttribute("error", "Conversation name cannot be empty");
+      String conversationTitle = request.getParameter("conversationTitle");
+      if (!conversationTitle.matches("[\\w*]*")) {
+        request.setAttribute("error", "Please enter only letters and numbers.");
         request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
         return;
       }
 
-    if (conversationStore.isTitleTaken(conversationTitle)) {
-      // conversation title is already taken, just go into that conversation instead of creating a
-      // new one
+      if (conversationTitle.length()==0) {
+          request.setAttribute("error", "Conversation name cannot be empty");
+          request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+          return;
+        }
+
+      if (conversationStore.isTitleTaken(conversationTitle)) {
+        // conversation title is already taken, just go into that conversation instead of creating a
+        // new one
+        response.sendRedirect("/chat/" + conversationTitle);
+        return;
+      }
+
+      boolean isPublic = true; // This will eventually be set from request's attribute
+      Conversation conversation =
+          new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
+
+      List<UUID> members = new ArrayList<UUID>(); // This will also come from request's attribute
+      conversation.setMembers(members);
+      for (UUID memberId : members) {
+      	User member = userStore.getUser(memberId);
+      	member.addConversation(conversation.getId());
+      	userStore.updateUser(member); // update for persistant data store
+      }
+      conversationStore.addConversation(conversation);
       response.sendRedirect("/chat/" + conversationTitle);
-      return;
-    }
-
-    Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), true);
-
-    conversationStore.addConversation(conversation);
-    response.sendRedirect("/chat/" + conversationTitle);
   }
 }

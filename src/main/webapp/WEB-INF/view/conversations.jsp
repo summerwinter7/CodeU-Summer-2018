@@ -26,11 +26,11 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">["hip", hip] Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-      <a href="/profile">Profile</a>
+      <a href="/profile/<%=request.getSession().getAttribute("user")%>">Profile</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
@@ -51,6 +51,7 @@
           <div class="form-group">
             <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
+<<<<<<< HEAD
           </div>
           <div class="form-group">
             <label for="AccessControl">Set Access</label>
@@ -71,6 +72,16 @@
                   continue;
                 }%>
                   <option value="<%=user.getName()%>"><%=user.getName()%></option>
+=======
+         </div>
+        <div class="form-group">
+          <label for="userLabel">Add User</label>
+          <select name = "userLabel" id= "userLabel" style="width: 300px;">
+              <option value = "add user">add user</option>
+              //TODO:Get list of users from servlet class set users as option values
+          </select>
+        </div>
+>>>>>>> 83ac52c034b006b9b071d362bc397257fdeea47e
 
               <%}%>
             </select>
@@ -82,6 +93,22 @@
     <% } %>
 
     <h1>Conversations</h1>
+    <% 
+    List<Conversation> privateConversations = 
+	  (List<Conversation>) request.getAttribute("privateConversations");
+    if(request.getSession().getAttribute("user") != null && !privateConversations.isEmpty()) {  %>
+    <h4>Private Conversations (Only group members can view):</h4>
+    	<ul class="mdl-list">
+    	<%
+     	  for(Conversation conversation : privateConversations){
+   		%>
+      		<li><a href="/chat/<%= conversation.getTitle() %>">
+        	<%= conversation.getTitle() %></a></li>
+    	<%
+      	  }
+    	%>
+      </ul>
+    <%} %>
 
 	<h4>Public Conversations (Anyone can view):</h4>
     <%

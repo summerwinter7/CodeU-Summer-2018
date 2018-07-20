@@ -29,7 +29,7 @@ public class Conversation implements Activity{
   public final Instant creation;
   public final String title;
   private boolean isPublic;
-  private List<User> members;
+  private List<UUID> members;
   private String displayText;
 
   /**
@@ -46,7 +46,7 @@ public class Conversation implements Activity{
     this.creation = creation;
     this.title = title;
     this.isPublic = isPublic;
-    this.members = new ArrayList<User>();
+    this.members = new ArrayList<UUID>();
     this.displayText = "Conversation created: " + title;
   }
 
@@ -74,11 +74,11 @@ public class Conversation implements Activity{
 	  return isPublic;
   }
   
-  public void setMembers(List<User> members) {
+  public void setMembers(List<UUID> members) {
 	  this.members = members;
   }
   
-  public List<User> getMembers() {
+  public List<UUID> getMembers() {
 	  return members;
   }
 
