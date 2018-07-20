@@ -49,7 +49,7 @@ public class ProfileServletTest {
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
 
     profileServlet.doPost(mockRequest, mockResponse);
-    Mockito.verify(mockResponse).sendRedirect("/profile");
+    Mockito.verify(mockResponse).sendRedirect("/profile/" +mockRequest.getSession().getAttribute("user"));
   }
 
   @Test
@@ -73,7 +73,7 @@ public class ProfileServletTest {
     profileServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(user);
-    Mockito.verify(mockResponse).sendRedirect("/profile");
+    Mockito.verify(mockResponse).sendRedirect("/profile/" +mockRequest.getSession().getAttribute("user"));
   }
 
 }
