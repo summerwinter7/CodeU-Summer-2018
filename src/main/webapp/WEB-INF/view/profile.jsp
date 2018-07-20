@@ -29,15 +29,18 @@
     </nav>
 
     <div id="container">
-      <%if(request.getSession().getAttribute("user") != null) { %>
-        <h1><%=request.getSession().getAttribute("user")%>'s Profile Page</h1>
+      <% User user = (User)request.getAttribute("usersProfile");
+      if( user != null) { %>
+        <h1><%=user.getName()%>'s Profile Page</h1>
         <hr/>
         <form action="/profile" method="POST">
           <h2> About Me </h2>
-            <p style="width:800px"><%=UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %></p>
+            <p style="width:800px"><%=user.getAboutMe() %></p>
+          <% if (user.getName().equals(request.getSession().getAttribute("user"))) {%>
           <h3> Edit your About Me(only you can see this)</h2>
           <textarea name="aboutMe" rows="5" cols="112"></textarea>
           <button type="submit">Submit</button>
+          <% } %>
         </form>
       <%} %>
     </div>
