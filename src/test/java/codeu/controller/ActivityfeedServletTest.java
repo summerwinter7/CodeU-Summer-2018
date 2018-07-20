@@ -100,7 +100,8 @@ public class ActivityfeedServletTest {
 	    
 	    activityfeedServlet.doGet(mockRequest, mockResponse);
 	    
-	    // this creates the list in reverse order, which is how it should be sent by the servlet
+	    //Conversation1 is private and there is no user logged in, so it should not appear on 
+	    // the activity feed, and neither should the message to that conversation
 	    List<Activity> orderedList = new ArrayList<>();
 	    orderedList.add(message2);
 	    orderedList.add(conversation2);
@@ -138,6 +139,8 @@ public class ActivityfeedServletTest {
 			conversationList.add(conversation1.getId());
 			user1.setConversations(conversationList);
 			
+			//user1 is logged in, and they are a member of private conversation1,
+			// so they can see it in the activity feed
 			Mockito.when(mockSession.getAttribute("user")).thenReturn("test_name");
 		    Mockito.when(mockUserStore.getUser("test_name")).thenReturn(user1);
 			

@@ -68,6 +68,7 @@ public class ActivityfeedServlet extends HttpServlet{
 		for (Conversation convo : conversations) {
 			User owner = userStore.getUser(convo.getOwnerId());
 			convo.setDisplayText(owner.getName() + " created conversation: " + convo.getTitle());
+			// Only show activity about this convo if it is public or the logged-in user is a member
 			if (convo.getIsPublic()) {
 				activity.add(convo);
 			} else if ((username != null) && 
@@ -79,6 +80,7 @@ public class ActivityfeedServlet extends HttpServlet{
 			User author = userStore.getUser(message.getAuthorId());
 			Conversation conversation = conversationStore.getConversationWithID(message.getConversationId());
 			message.setDisplayText(author.getName() + " sent message: \"" + message.getContent() + "\"" + " to conversation: " + conversation.getTitle());
+			//only show messages to public conversations, or private ones where user is a member
 			if (conversation.getIsPublic()) {
 				activity.add(message);
 			} else if ((username != null) && 
