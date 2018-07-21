@@ -47,6 +47,8 @@
 
     <h1>Activity Feed</h1>
 
+	<p> This is the activity feed</p>
+
 	<%
     List<Activity> activity =
       (List<Activity>) request.getAttribute("activity");

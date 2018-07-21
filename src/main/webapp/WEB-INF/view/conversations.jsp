@@ -15,7 +15,8 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
-
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,15 +51,30 @@
           <div class="form-group">
             <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
-         </div>
-        <div class="form-group">
-          <label for="userLabel">Add User</label>
-          <select name = "userLabel" id= "userLabel" style="width: 300px;">
-              <option value = "add user">add user</option>
-              //TODO:Get list of users from servlet class set users as option values
-          </select>
-        </div>
 
+          </div>
+          <div class="form-group">
+            <label for="accessControl">Set Access</label>
+            <select name="accessControl" style="width:300px;">
+              <option disabled selected value> -- select an access -- </option>
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div class="form-group"
+            <label for="userLabel">Add Users</label>
+            <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
+            <select name="userLabel" style="width:300px;">
+              <option disabled selected value> -- select a user -- </option>
+              <%for (User user:users){ %>
+                <%if(user.getName() == null){
+                  continue;
+                }%>
+                  <option value="<%=user.getId()%>"><%=user.getName()%></option>
+
+              <%}%>
+            </select>
+         </div>
         <button type="submit">Create</button>
       </form>
 
@@ -66,8 +82,9 @@
     <% } %>
 
     <h1>Conversations</h1>
-    <% 
-    List<Conversation> privateConversations = 
+
+    <%
+    List<Conversation> privateConversations =
 	  (List<Conversation>) request.getAttribute("privateConversations");
     if(request.getSession().getAttribute("user") != null && !privateConversations.isEmpty()) {  %>
     <h4>Private Conversations (Only group members can view):</h4>
