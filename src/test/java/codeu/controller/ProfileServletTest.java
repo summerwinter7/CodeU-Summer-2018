@@ -2,6 +2,8 @@ package codeu.controller;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import junit.framework.Assert;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -40,8 +42,20 @@ public class ProfileServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
+	Mockito.when(mockRequest.getRequestURI()).thenReturn("/profile/test_username");
+	User test_user = new User(UUID.randomUUID(), "test_username", "$2a$10$bBiLUAVmUFK6Iwg5r", Instant.now(), "about me");
+	Mockito.when(mockUserStore.getUser("test_username")).thenReturn(test_user);
     profileServlet.doGet(mockRequest, mockResponse);
+    Mockito.verify(mockRequest).setAttribute("usersProfile", test_user);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+  
+  @Test
+  public void testDoGet_invalidUser() throws IOException, ServletException {
+	Mockito.when(mockRequest.getRequestURI()).thenReturn("/profile/test_username");
+	Mockito.when(mockUserStore.getUser("test_username")).thenReturn(null);
+	profileServlet.doGet(mockRequest, mockResponse);
+	Mockito.verify(mockResponse).sendRedirect("/");
   }
 
   @Test

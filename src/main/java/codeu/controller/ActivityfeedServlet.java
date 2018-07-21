@@ -56,7 +56,7 @@ public class ActivityfeedServlet extends HttpServlet{
 	 * users, conversations, and messages and adding them to the list of Activities
 	 * to avoid casting issues. It then sorts the list and reverses the order so that
 	 * it will display correctly. */
-	private List<Activity> buildList() {
+	private List<Activity> buildList(String username) {
 		List<Activity> activity = new ArrayList<>();
 		List<User> users = userStore.getAllUsers();
 		List<Conversation> conversations = conversationStore.getAllConversations();
@@ -68,13 +68,25 @@ public class ActivityfeedServlet extends HttpServlet{
 		for (Conversation convo : conversations) {
 			User owner = userStore.getUser(convo.getOwnerId());
 			convo.setDisplayText(owner.getName() + " created conversation: " + convo.getTitle());
-			activity.add(convo);
+			// Only show activity about this convo if it is public or the logged-in user is a member
+			if (convo.getIsPublic()) {
+				activity.add(convo);
+			} else if ((username != null) && 
+					userStore.getUser(username).getConversations().contains(convo.getId())) {
+				activity.add(convo);
+			}
 		}
 		for (Message message : messages) {
 			User author = userStore.getUser(message.getAuthorId());
 			Conversation conversation = conversationStore.getConversationWithID(message.getConversationId());
 			message.setDisplayText(author.getName() + " sent message: \"" + message.getContent() + "\"" + " to conversation: " + conversation.getTitle());
-			activity.add(message);
+			//only show messages to public conversations, or private ones where user is a member
+			if (conversation.getIsPublic()) {
+				activity.add(message);
+			} else if ((username != null) && 
+					userStore.getUser(username).getConversations().contains(conversation.getId())) {
+			  activity.add(message);
+			}
 		}
 		Collections.sort(activity, Collections.reverseOrder());
 		return activity;
@@ -88,7 +100,8 @@ public class ActivityfeedServlet extends HttpServlet{
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException{
-		List<Activity> activity = buildList();
+	    String username = (String) request.getSession().getAttribute("user");
+		List<Activity> activity = buildList(username);
 		request.setAttribute("activity", activity);
 	    request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
 	}

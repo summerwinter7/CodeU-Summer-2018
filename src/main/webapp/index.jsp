@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>["hip", hip] Chat App</title>
+  <title>["hip", "hip"] Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>

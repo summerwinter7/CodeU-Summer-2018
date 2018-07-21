@@ -64,7 +64,7 @@
           <div class="form-group"
             <label for="userLabel">Add Users</label>
             <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
-            <select name="userLabel" style="width:300px;" multiple>
+            <select name="userLabel" style="width:300px;">
               <option disabled selected value> -- select a user -- </option>
               <%for (User user:users){ %>
                 <%if(user.getName() == null){
@@ -74,8 +74,7 @@
 
               <%}%>
             </select>
-        </div>
-
+         </div>
         <button type="submit">Create</button>
       </form>
 
@@ -83,6 +82,7 @@
     <% } %>
 
     <h1>Conversations</h1>
+
     <%
     List<Conversation> privateConversations =
 	  (List<Conversation>) request.getAttribute("privateConversations");

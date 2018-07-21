@@ -20,14 +20,18 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -42,6 +46,9 @@ public class ChatServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+  
+  /** Class that gives access to Conversation. */
+  private Conversation conversation;
 
   /** Set up state for handling chat requests. */
   @Override
@@ -96,11 +103,28 @@ public class ChatServlet extends HttpServlet {
     }
 
     UUID conversationId = conversation.getId();
-
+    //List of members and new userList to store usernames 
+    List<UUID> members = conversation.getMembers();
+    List<String> userList = new ArrayList<String>();
+    //UUID member converted to username and added to userList
+    for(UUID member : members){
+    	userList.add(userStore.getUser(member).getName());
+    }
+    
+    String username = (String) request.getSession().getAttribute("user");
+    //If the user is not a member of the private conversation, the conversation shouldn't appear 
+    if (!conversation.getIsPublic()) {
+    	if (username == null ||  !members.contains(userStore.getUser(username).getId())) {
+    		response.sendRedirect("/conversations");
+    		return;
+    	}
+    }
+    
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
 
     request.setAttribute("conversation", conversation);
     request.setAttribute("messages", messages);
+    request.setAttribute("member", userList);
     request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
   }
 

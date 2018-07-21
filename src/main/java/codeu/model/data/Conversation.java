@@ -81,7 +81,7 @@ public class Conversation implements Activity{
   public List<UUID> getMembers() {
 	  return members;
   }
-
+  
   public void setDisplayText(String s) {
 	  displayText = s;
   }
