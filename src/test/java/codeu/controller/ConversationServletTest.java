@@ -66,22 +66,12 @@ public class ConversationServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-    List<Conversation> fakeConversationList = new ArrayList<>();
-    fakeConversationList.add(
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), true));
-    Mockito.when(mockConversationStore.getAllPublicConversations()).thenReturn(fakeConversationList);
 
     List<User> fakeUserList = new ArrayList<>();
     fakeUserList.add(
       new User(UUID.randomUUID(),"test_username", "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
       Instant.now(), "test_aboutMe"));
       Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUserList);
-
-    conversationServlet.doGet(mockRequest, mockResponse);
-
-    Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationList);
-    Mockito.verify(mockRequest).setAttribute("ConvoUsers", fakeUserList);
-
     List<Conversation> fakeConversationListPublic = new ArrayList<>();
     fakeConversationListPublic.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation_public", Instant.now(), true));
@@ -107,7 +97,9 @@ public class ConversationServletTest {
 
     Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationListPublic);
     Mockito.verify(mockRequest).setAttribute("privateConversations", fakeConversationListPrivate);
+    Mockito.verify(mockRequest).setAttribute("ConvoUsers", fakeUserList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+
   }
 
   @Test

@@ -26,7 +26,7 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">["hip", hip] Chat App</a>
+    <a id="navTitle" href="/">["hip", "hip"] Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -51,40 +51,33 @@
           <div class="form-group">
             <label class="form-control-label">Group Name:</label>
           <input type="text" name="conversationTitle">
-<<<<<<< HEAD
+
           </div>
           <div class="form-group">
-            <label for="AccessControl">Set Access</label>
-            <select name="AccessControl" style="width:300px;">
+            <label for="accessControl">Set Access</label>
+            <select name="accessControl" style="width:300px;">
               <option disabled selected value> -- select an access -- </option>
               <option value="Public">Public</option>
               <option value="Private">Private</option>
             </select>
           </div>
           <h4>(Only if Conversation is private)</h4>
-          <div class="form-group"
-            <label for="Userlabel">Add Users</label>
-            <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
-            <select name="UserLabel" style="width:300px;">
-              <option disabled selected value> -- select a user -- </option>
-              <%for (User user:users){ %>
-                <%if(user.getName() == null){
-                  continue;
-                }%>
-                  <option value="<%=user.getName()%>"><%=user.getName()%></option>
-=======
-         </div>
-        <div class="form-group">
-          <label for="userLabel">Add User</label>
-          <select name = "userLabel" id= "userLabel" style="width: 300px;">
-              <option value = "add user">add user</option>
-              //TODO:Get list of users from servlet class set users as option values
-          </select>
-        </div>
->>>>>>> 83ac52c034b006b9b071d362bc397257fdeea47e
+          <%if (request.getParameter("accessControl") == "Private"){%>
 
-              <%}%>
+              <div class="form-group"
+                <label for="userLabel">Add Users</label>
+                <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
+                <select name="userLabel" style="width:300px;" multiple>
+                  <option disabled selected value> -- select a user -- </option>
+                  <%for (User user:users){ %>
+                    <%if(user.getName() == null){
+                      continue;
+                    }%>
+                      <option value="<%=user.getId()%>"><%=user.getName()%></option>
+
+                  <%}%>
             </select>
+          <%}%>
           </div>
         <button type="submit">Create</button>
       </form>
@@ -93,8 +86,8 @@
     <% } %>
 
     <h1>Conversations</h1>
-    <% 
-    List<Conversation> privateConversations = 
+    <%
+    List<Conversation> privateConversations =
 	  (List<Conversation>) request.getAttribute("privateConversations");
     if(request.getSession().getAttribute("user") != null && !privateConversations.isEmpty()) {  %>
     <h4>Private Conversations (Only group members can view):</h4>

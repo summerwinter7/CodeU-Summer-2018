@@ -74,9 +74,7 @@ public class ConversationServlet extends HttpServlet {
     	List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
     	request.setAttribute("publicConversations", publicConversations);
       List<User> users = userStore.getAllUsers();
-
       request.setAttribute("ConvoUsers",users);
-      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
 
       String username = (String) request.getSession().getAttribute("user");
       List<Conversation> privateConversations = new ArrayList<Conversation>();
@@ -87,6 +85,7 @@ public class ConversationServlet extends HttpServlet {
       		privateConversations.add(conversationStore.getConversationWithID(convoUUID));
       	}
       }
+
   	  request.setAttribute("privateConversations", privateConversations);
       request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
     }
@@ -115,6 +114,7 @@ public class ConversationServlet extends HttpServlet {
         return;
       }
 
+
       String conversationTitle = request.getParameter("conversationTitle");
       if (!conversationTitle.matches("[\\w*]*")) {
         request.setAttribute("error", "Please enter only letters and numbers.");
@@ -134,19 +134,40 @@ public class ConversationServlet extends HttpServlet {
         response.sendRedirect("/chat/" + conversationTitle);
         return;
       }
-
+      String userLabel = request.getParameter("userLabel");
+      System.out.println(userLabel);
+      String accessControl = request.getParameter("accessControl");
+      System.out.println(accessControl);
       boolean isPublic = true; // This will eventually be set from request's attribute
-      Conversation conversation =
-          new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
+      if (accessControl == "Private") {
+        isPublic = false;
+        Conversation conversation =
+            new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
+        List<Conversation> newPrivateconversation = (List<Conversation>)request.getAttribute("privateConversations");
+        for (Conversation priConversation:newPrivateconversation){
+            priConversation = conversation;
+            List<String> userLabels = new ArrayList<String>();
+            userLabels.add(userLabel);
+            System.out.println(userLabels);
+            for(String label: userLabels){
+                UUID userID = UUID.fromString(label);
+                List<UUID> members = new ArrayList<UUID>();
+                members.add(userID);
+                System.out.println(members);
+                priConversation.setMembers(members);
+                for (UUID memberId : members) {
+                	User member = userStore.getUser(memberId);
+                	member.addConversation(priConversation.getId());
+                	userStore.updateUser(member);
+                }
+            }
+            conversationStore.addConversation(priConversation);
 
-      List<UUID> members = new ArrayList<UUID>(); // This will also come from request's attribute
-      conversation.setMembers(members);
-      for (UUID memberId : members) {
-      	User member = userStore.getUser(memberId);
-      	member.addConversation(conversation.getId());
-      	userStore.updateUser(member); // update for persistant data store
-      }
-      conversationStore.addConversation(conversation);
+        }
+       }
+      Conversation newConversation =
+          new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
+      conversationStore.addConversation(newConversation);
       response.sendRedirect("/chat/" + conversationTitle);
   }
 }
