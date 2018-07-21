@@ -76,9 +76,9 @@
                       <option value="<%=user.getId()%>"><%=user.getName()%></option>
 
                   <%}%>
-            </select>
+                </select>
+            </div>
           <%}%>
-          </div>
         <button type="submit">Create</button>
       </form>
 
