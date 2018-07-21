@@ -61,9 +61,8 @@
               <option value="Private">Private</option>
             </select>
           </div>
-          <h4>(Only if Conversation is private)</h4>
           <%if (request.getParameter("accessControl") == "Private"){%>
-
+              <h4>(Only if Conversation is private)</h4>
               <div class="form-group"
                 <label for="userLabel">Add Users</label>
                 <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
