@@ -13,7 +13,6 @@
 // limitations under the License.
 
 package codeu.controller;
-
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
@@ -27,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.String;
 
 /** Servlet class responsible for the conversations page. */
 public class ConversationServlet extends HttpServlet {
@@ -139,35 +139,22 @@ public class ConversationServlet extends HttpServlet {
       String accessControl = request.getParameter("accessControl");
       System.out.println(accessControl);
       boolean isPublic = true; // This will eventually be set from request's attribute
-      if (accessControl == "Private") {
+      if (accessControl.equals("Private")) {
         isPublic = false;
-        Conversation conversation =
-            new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
-        List<Conversation> newPrivateconversation = (List<Conversation>)request.getAttribute("privateConversations");
-        for (Conversation priConversation:newPrivateconversation){
-            priConversation = conversation;
-            List<String> userLabels = new ArrayList<String>();
-            userLabels.add(userLabel);
-            System.out.println(userLabels);
-            for(String label: userLabels){
-                UUID userID = UUID.fromString(label);
-                List<UUID> members = new ArrayList<UUID>();
-                members.add(userID);
-                System.out.println(members);
-                priConversation.setMembers(members);
-                for (UUID memberId : members) {
-                	User member = userStore.getUser(memberId);
-                	member.addConversation(priConversation.getId());
-                	userStore.updateUser(member);
-                }
-            }
-            conversationStore.addConversation(priConversation);
+      }
 
-        }
-       }
-      Conversation newConversation =
+      Conversation conversation =
           new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
-      conversationStore.addConversation(newConversation);
+      List<UUID> members = new ArrayList<UUID>();
+      members.add(UUID.fromString(userLabel));
+      conversation.setMembers(members);
+      for (UUID memberId : members) {
+        	User member = userStore.getUser(memberId);
+        	member.addConversation(conversation.getId());
+        	userStore.updateUser(member);
+      }
+      conversationStore.addConversation(conversation);
+
       response.sendRedirect("/chat/" + conversationTitle);
   }
 }

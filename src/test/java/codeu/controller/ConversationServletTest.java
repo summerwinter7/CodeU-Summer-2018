@@ -203,6 +203,10 @@ public class ConversationServletTest {
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
+    Mockito.when(mockRequest.getParameter("accessControl")).thenReturn("Public");
+    Mockito.when(mockUserStore.getUser(fakeUser.getId())).thenReturn(fakeUser);
+    Mockito.when(mockRequest.getParameter("userLabel")).thenReturn(fakeUser.getId().toString());
+
 
     conversationServlet.doPost(mockRequest, mockResponse);
 

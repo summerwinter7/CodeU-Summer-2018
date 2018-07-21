@@ -61,23 +61,21 @@
               <option value="Private">Private</option>
             </select>
           </div>
-          <%if (request.getParameter("accessControl") == "Private"){%>
-              <h4>(Only if Conversation is private)</h4>
-              <div class="form-group"
-                <label for="userLabel">Add Users</label>
-                <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
-                <select name="userLabel" style="width:300px;" multiple>
-                  <option disabled selected value> -- select a user -- </option>
-                  <%for (User user:users){ %>
-                    <%if(user.getName() == null){
-                      continue;
-                    }%>
-                      <option value="<%=user.getId()%>"><%=user.getName()%></option>
+          <div class="form-group"
+            <label for="userLabel">Add Users</label>
+            <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
+            <select name="userLabel" style="width:300px;" multiple>
+              <option disabled selected value> -- select a user -- </option>
+              <%for (User user:users){ %>
+                <%if(user.getName() == null){
+                  continue;
+                }%>
+                  <option value="<%=user.getId()%>"><%=user.getName()%></option>
 
-                  <%}%>
-                </select>
-            </div>
-          <%}%>
+              <%}%>
+            </select>
+        </div>
+
         <button type="submit">Create</button>
       </form>
 
