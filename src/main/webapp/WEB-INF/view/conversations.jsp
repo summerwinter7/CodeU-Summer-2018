@@ -61,20 +61,17 @@
               <option value="Private">Private</option>
             </select>
           </div>
-          <div class="form-group"
+           <%List<User> users =
+	  		(List<User>) request.getAttribute("ConvoUsers");%>
+          <div class="form-group">
             <label for="userLabel">Add Users</label>
-            <% List<User> users =(List<User>) request.getAttribute("ConvoUsers");%>
             <select name="userLabel" style="width:300px;">
               <option disabled selected value> -- select a user -- </option>
-              <%for (User user:users){ %>
-                <%if(user.getName() == null){
-                  continue;
-                }%>
-                  <option value="<%=user.getId()%>"><%=user.getName()%></option>
-
-              <%}%>
+              <% for (User user: users) { %>
+            	 <option value="<%=user.getId()%>"><%=user.getName()%> </option>
+              <% } %>
             </select>
-         </div>
+          </div>
         <button type="submit">Create</button>
       </form>
 
