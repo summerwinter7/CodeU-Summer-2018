@@ -139,7 +139,10 @@ public class ConversationServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(), "test_aboutMe");
+    List<User> users = new ArrayList<User>();
+    users.add(fakeUser);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    Mockito.when(mockUserStore.getAllUsers()).thenReturn(users);
 
     conversationServlet.doPost(mockRequest, mockResponse);
 
@@ -147,6 +150,7 @@ public class ConversationServletTest {
         .addConversation(Mockito.any(Conversation.class));
     Mockito.verify(mockRequest).setAttribute("error", "Please enter only letters and numbers.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    Mockito.verify(mockRequest).setAttribute("ConvoUsers", users);
   }
 
   @Test
@@ -161,6 +165,10 @@ public class ConversationServletTest {
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(), "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    List<User> users = new ArrayList<User>();
+    users.add(fakeUser);
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    Mockito.when(mockUserStore.getAllUsers()).thenReturn(users);
 
     conversationServlet.doPost(mockRequest, mockResponse);
 
@@ -168,12 +176,14 @@ public class ConversationServletTest {
         .addConversation(Mockito.any(Conversation.class));
     Mockito.verify(mockRequest).setAttribute("error", "Conversation name cannot be empty");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    Mockito.verify(mockRequest).setAttribute("ConvoUsers", users);
   }
-
+  
   @Test
-  public void testDoPost_ConversationNameTaken() throws IOException, ServletException {
-    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
+  public void testDoPost_NoAccessControl() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_title");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockRequest.getParameter("accessControl")).thenReturn(null);
 
     User fakeUser =
         new User(
@@ -182,7 +192,34 @@ public class ConversationServletTest {
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(), "test_aboutMe");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    List<User> users = new ArrayList<User>();
+    users.add(fakeUser);
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    Mockito.when(mockUserStore.getAllUsers()).thenReturn(users);
 
+    conversationServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockConversationStore, Mockito.never())
+        .addConversation(Mockito.any(Conversation.class));
+    Mockito.verify(mockRequest).setAttribute("error", "You must select an access control");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    Mockito.verify(mockRequest).setAttribute("ConvoUsers", users);
+  }
+
+  @Test
+  public void testDoPost_ConversationNameTaken() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockRequest.getParameter("accessControl")).thenReturn("Public");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(), "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(true);
 
     conversationServlet.doPost(mockRequest, mockResponse);
@@ -193,7 +230,7 @@ public class ConversationServletTest {
   }
 
   @Test
-  public void testDoPost_NewConversation() throws IOException, ServletException {
+  public void testDoPost_NewConversationPublic() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
@@ -217,6 +254,77 @@ public class ConversationServletTest {
         ArgumentCaptor.forClass(Conversation.class);
     Mockito.verify(mockConversationStore).addConversation(conversationArgumentCaptor.capture());
     Assert.assertEquals(conversationArgumentCaptor.getValue().getTitle(), "test_conversation");
+    Assert.assertEquals(conversationArgumentCaptor.getValue().getIsPublic(), true);
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+  
+  @Test
+  public void testDoPost_NewConversationPrivate() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(), "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    
+    User fakeUser2 =
+            new User(
+                UUID.randomUUID(),
+                "test_username2",
+                "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+                Instant.now(), "test_aboutMe2");
+    Mockito.when(mockUserStore.getUser(fakeUser2.getId())).thenReturn(fakeUser2);
+
+    Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
+    Mockito.when(mockRequest.getParameter("accessControl")).thenReturn("Private");
+    Mockito.when(mockUserStore.getUser(fakeUser.getId())).thenReturn(fakeUser);
+    Mockito.when(mockRequest.getParameter("userLabel")).thenReturn(fakeUser2.getId().toString());
+
+
+    conversationServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Conversation> conversationArgumentCaptor =
+        ArgumentCaptor.forClass(Conversation.class);
+    Mockito.verify(mockConversationStore).addConversation(conversationArgumentCaptor.capture());
+    Assert.assertEquals(conversationArgumentCaptor.getValue().getTitle(), "test_conversation");
+    Assert.assertEquals(conversationArgumentCaptor.getValue().getIsPublic(), false);
+    Assert.assertTrue((conversationArgumentCaptor.getValue().getMembers()).contains(fakeUser.getId()));
+    Assert.assertTrue((conversationArgumentCaptor.getValue().getMembers()).contains(fakeUser2.getId()));
+
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+  
+  @Test
+  public void testDoPost_NewConversation_NoUsers() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(), "test_aboutMe");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
+    Mockito.when(mockRequest.getParameter("accessControl")).thenReturn("Private");
+    Mockito.when(mockUserStore.getUser(fakeUser.getId())).thenReturn(fakeUser);
+    Mockito.when(mockRequest.getParameter("userLabel")).thenReturn(null);
+
+    conversationServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Conversation> conversationArgumentCaptor =
+        ArgumentCaptor.forClass(Conversation.class);
+    Mockito.verify(mockConversationStore).addConversation(conversationArgumentCaptor.capture());
+    Assert.assertEquals(conversationArgumentCaptor.getValue().getTitle(), "test_conversation");
+    Assert.assertEquals(conversationArgumentCaptor.getValue().getIsPublic(), false);
+    Assert.assertTrue((conversationArgumentCaptor.getValue().getMembers()).contains(fakeUser.getId()));
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }

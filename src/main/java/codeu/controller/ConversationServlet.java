@@ -75,7 +75,6 @@ public class ConversationServlet extends HttpServlet {
     	request.setAttribute("publicConversations", publicConversations);
       List<User> users = userStore.getAllUsers();
       request.setAttribute("ConvoUsers",users);
-     // request.getSession().setAttribute("allUsers", users);
 
       String username = (String) request.getSession().getAttribute("user");
       List<Conversation> privateConversations = new ArrayList<Conversation>();
@@ -120,18 +119,21 @@ public class ConversationServlet extends HttpServlet {
       if (!conversationTitle.matches("[\\w*]*")) {
         request.setAttribute("error", "Please enter only letters and numbers.");
         doGet(request, response);
-        //request.setAttribute("ConvoUsers", userStore.getAllUsers());
-       // request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
         return;
       }
 
       if (conversationTitle.length()==0) {
           request.setAttribute("error", "Conversation name cannot be empty");
           doGet(request, response);
-          //request.setAttribute("ConvoUsers", userStore.getAllUsers());
-         // request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
           return;
         }
+      
+      String accessControl = request.getParameter("accessControl");
+      if (accessControl==null) {
+          request.setAttribute("error", "You must select an access control");
+          doGet(request, response);
+          return;
+      }
 
       if (conversationStore.isTitleTaken(conversationTitle)) {
         // conversation title is already taken, just go into that conversation instead of creating a
@@ -140,8 +142,7 @@ public class ConversationServlet extends HttpServlet {
         return;
       }
       String userLabel = request.getParameter("userLabel");
-      String accessControl = request.getParameter("accessControl");
-      boolean isPublic = true; // This will eventually be set from request's attribute
+      boolean isPublic = true;
       if (accessControl.equals("Private")) {
         isPublic = false;
       }
