@@ -118,15 +118,22 @@ public class ConversationServlet extends HttpServlet {
       String conversationTitle = request.getParameter("conversationTitle");
       if (!conversationTitle.matches("[\\w*]*")) {
         request.setAttribute("error", "Please enter only letters and numbers.");
-        request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+        doGet(request, response);
         return;
       }
 
       if (conversationTitle.length()==0) {
           request.setAttribute("error", "Conversation name cannot be empty");
-          request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+          doGet(request, response);
           return;
         }
+      
+      String accessControl = request.getParameter("accessControl");
+      if (accessControl==null) {
+          request.setAttribute("error", "You must select an access control");
+          doGet(request, response);
+          return;
+      }
 
       if (conversationStore.isTitleTaken(conversationTitle)) {
         // conversation title is already taken, just go into that conversation instead of creating a
@@ -135,10 +142,7 @@ public class ConversationServlet extends HttpServlet {
         return;
       }
       String userLabel = request.getParameter("userLabel");
-      System.out.println(userLabel);
-      String accessControl = request.getParameter("accessControl");
-      System.out.println(accessControl);
-      boolean isPublic = true; // This will eventually be set from request's attribute
+      boolean isPublic = true;
       if (accessControl.equals("Private")) {
         isPublic = false;
       }
@@ -146,7 +150,14 @@ public class ConversationServlet extends HttpServlet {
       Conversation conversation =
           new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPublic);
       List<UUID> members = new ArrayList<UUID>();
-      members.add(UUID.fromString(userLabel));
+      if (!isPublic) {
+    	  if (userLabel != null) {
+              members.add(UUID.fromString(userLabel));
+    	  }
+          if (!members.contains(user.getId())) {
+        	  members.add(user.getId());
+          }
+      }
       conversation.setMembers(members);
       for (UUID memberId : members) {
         	User member = userStore.getUser(memberId);
