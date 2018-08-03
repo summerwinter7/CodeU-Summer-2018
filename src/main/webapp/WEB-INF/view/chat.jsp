@@ -19,6 +19,7 @@
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
 List<User> users = (List<User>) request.getAttribute("users");
+List<String> members = (List<String>)request.getAttribute("member");
 %>
 
 <!DOCTYPE html>
@@ -65,16 +66,31 @@ List<User> users = (List<User>) request.getAttribute("users");
     <h1><%= conversation.getTitle() %>
       <a href="" style="float: right">&#8635;</a></h1>
       
+    <% if(conversation.getIsPublic() == false) { %>
+    <div id="members">
+    	<h4>Members:  
+    	<%for (int i=0; i<members.size(); i++) {
+    		String member = members.get(i);
+    		if (i<members.size()-1) { %>
+    			<a href="/profile/<%= member %>"><%= member %></a>,
+    		<%} else { %>
+    			<a href="/profile/<%= member %>"><%= member %></a>
+    		<%}
+    	}%>
+    	</h4>
+  	</div>
+	<% } %>
+      
     <% if((request.getSession().getAttribute("user") != null)&& 
     		!conversation.getIsPublic()){ %>
        <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-      <%List<User> users =
+      <%List<User> convoUsers =
 	  		(List<User>) request.getAttribute("ConvoUsers");%>
           <div class="form-group">
-            <label for="userLabel">Add Users</label>
+            <label for="userLabel">Add Member</label>
             <select name="userLabel" style="width:300px;">
               <option disabled selected value> -- select a user -- </option>
-              <% for (User user: users) { %>
+              <% for (User user: convoUsers) { %>
             	 <option value="<%=user.getId()%>"><%=user.getName()%> </option>
               <% } %>
             </select>
@@ -115,14 +131,5 @@ List<User> users = (List<User>) request.getAttribute("users");
     <hr/>
 
   </div>
-<% if(conversation.getIsPublic() == false) { %>
-  <div id="container">
-    <h1><Members>
-      <a href="" style="float: right">&#8635;</a></h1>
-    <div id="members">
-    	<a>Members: <%=request.getAttribute("member")%> </a>
-	</div>
-  </div>
-<% } %>
 </body>
 </html>
