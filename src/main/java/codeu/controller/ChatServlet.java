@@ -171,10 +171,12 @@ public class ChatServlet extends HttpServlet {
         String userLabel = request.getParameter("userLabel");
   	  if (userLabel != null) {
           User newUser = userStore.getUser(UUID.fromString(userLabel));
-          newUser.addConversation(conversation.getId());
-      	  userStore.updateUser(newUser);
-      	  conversation.addMember(newUser.getId());
-      	  conversationStore.updateConversation(conversation);
+          if (!conversation.getMembers().contains(newUser.getId())) {
+        	  newUser.addConversation(conversation.getId());
+          	  userStore.updateUser(newUser);
+          	  conversation.addMember(newUser.getId());
+          	  conversationStore.updateConversation(conversation);
+          }
 	  }
       response.sendRedirect("/chat/" + conversationTitle);
   	  return;
