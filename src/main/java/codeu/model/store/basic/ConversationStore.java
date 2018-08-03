@@ -15,6 +15,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,13 @@ public class ConversationStore {
 			publicConversations.add(conversation);
 		}
 		persistentStorageAgent.writeThrough(conversation);
+	}
+	
+	/**
+	 * Update an existing Conversation.
+	 */
+	public void updateConversation(Conversation conversation) {
+	    persistentStorageAgent.writeThrough(conversation);
 	}
 
 	/** Check whether a Conversation title is already known to the application. */

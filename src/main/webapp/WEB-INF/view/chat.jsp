@@ -13,6 +13,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
@@ -62,6 +63,24 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <h1><%= conversation.getTitle() %>
       <a href="" style="float: right">&#8635;</a></h1>
+      
+    <% if((request.getSession().getAttribute("user") != null)&& 
+    		!conversation.getIsPublic()){ %>
+       <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+      <%List<User> users =
+	  		(List<User>) request.getAttribute("ConvoUsers");%>
+          <div class="form-group">
+            <label for="userLabel">Add Users</label>
+            <select name="userLabel" style="width:300px;">
+              <option disabled selected value> -- select a user -- </option>
+              <% for (User user: users) { %>
+            	 <option value="<%=user.getId()%>"><%=user.getName()%> </option>
+              <% } %>
+            </select>
+          </div>
+        <button type="submit">Add</button>
+      </form>
+    <%} %>
 
     <hr/>
 
