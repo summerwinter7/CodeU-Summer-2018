@@ -13,10 +13,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
+List<User> users = (List<User>) request.getAttribute("users");
 %>
 
 <!DOCTYPE html>
@@ -95,18 +97,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
 
   </div>
-
+<% if(conversation.getIsPublic() == false) { %>
   <div id="container">
-
     <h1><Members>
       <a href="" style="float: right">&#8635;</a></h1>
     <div id="members">
-      <ul>
-    	<li>Members: <%=request.getAttribute("member")%> </li>
-      </ul>
-    </div>
-
+    	<a>Members: <%=request.getAttribute("member")%> </a>
+	</div>
   </div>
-
+<% } %>
 </body>
 </html>
