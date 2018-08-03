@@ -26,6 +26,13 @@
 <head>
   <title>Activity Feed</title>
   <link rel="stylesheet" href="/css/main.css">
+  <style>
+    #activityfeed {
+      background-color: white;
+      height: 500px;
+      overflow-y: scroll
+    }
+  </style>
 </head>
 <body>
 
@@ -47,8 +54,7 @@
 
     <h1>Activity Feed</h1>
 
-	<p> This is the activity feed</p>
-
+  <div id="activityfeed">
 	<%
     List<Activity> activity =
       (List<Activity>) request.getAttribute("activity");
@@ -74,6 +80,7 @@
     <%
     }
     %>
+    </div>
     <hr/>
   </div>
 </body>

@@ -110,7 +110,8 @@ public class ChatServlet extends HttpServlet {
     for(UUID member : members){
     	userList.add(userStore.getUser(member).getName());
     }
-    
+    request.setAttribute("ConvoUsers", userStore.getAllUsers());
+
     String username = (String) request.getSession().getAttribute("user");
     //If the user is not a member of the private conversation, the conversation shouldn't appear 
     if (!conversation.getIsPublic()) {
@@ -163,6 +164,23 @@ public class ChatServlet extends HttpServlet {
     }
 
     String messageContent = request.getParameter("message");
+    
+    // If the message content is null, then the POST request is for adding a user 
+    // to the conversation, not for sending a message.
+    if (messageContent==null) {
+        String userLabel = request.getParameter("userLabel");
+  	  if (userLabel != null) {
+          User newUser = userStore.getUser(UUID.fromString(userLabel));
+          if (!conversation.getMembers().contains(newUser.getId())) {
+        	  newUser.addConversation(conversation.getId());
+          	  userStore.updateUser(newUser);
+          	  conversation.addMember(newUser.getId());
+          	  conversationStore.updateConversation(conversation);
+          }
+	  }
+      response.sendRedirect("/chat/" + conversationTitle);
+  	  return;
+    }
 
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());

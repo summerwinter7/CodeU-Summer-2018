@@ -78,6 +78,10 @@ public class Conversation implements Activity{
 	  this.members = members;
   }
   
+  public void addMember(UUID member) {
+	  members.add(member);
+  }
+  
   public List<UUID> getMembers() {
 	  return members;
   }

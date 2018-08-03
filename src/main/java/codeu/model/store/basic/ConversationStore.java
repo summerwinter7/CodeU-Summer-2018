@@ -97,6 +97,13 @@ public class ConversationStore {
 		}
 		persistentStorageAgent.writeThrough(conversation);
 	}
+	
+	/**
+	 * Update an existing Conversation.
+	 */
+	public void updateConversation(Conversation conversation) {
+	    persistentStorageAgent.writeThrough(conversation);
+	}
 
 	/** Check whether a Conversation title is already known to the application. */
 	public boolean isTitleTaken(String title) {
