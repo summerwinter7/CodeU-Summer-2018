@@ -103,6 +103,19 @@ List<User> users = (List<User>) request.getAttribute("users");
       <a href="" style="float: right">&#8635;</a></h1>
     <div id="members">
     	<a>Members: <%=request.getAttribute("member")%> </a>
+        <div class = "add-members">
+        	<label for="memberLabel">Add Members:</label>
+        	<select name="memberLabel" style="width:300px;">
+       			<option disabled selected value> -- select a user -- </option>
+       			<c:forEach var="user" items="${users}">
+       				<% UUID userId = user.getId();
+       				   String userName = user.getName();
+       				 %>
+       				<option value="${userId}">${userName}</option>
+              	</c:forEach>
+        	</select>
+        	<button type="submit">Create</button>
+        </div>
 	</div>
   </div>
 <% } %>
